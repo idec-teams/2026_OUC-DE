@@ -1,0 +1,270 @@
+/* =========================
+   Ocean Science Theme
+========================= */
+
+
+/* 页面背景 */
+
+body {
+    background: 
+linear-gradient(
+
+180deg,
+
+#f7fbfc,
+
+#e6f5f7
+
+);
+}
+
+
+/* 内容宽度 */
+
+.md-content {
+    max-width: 1200px;
+}
+
+
+/* 首页大标题 */
+
+.md-typeset h1 {
+
+    font-size: 4rem;
+
+    font-weight: 800;
+
+    line-height: 1.05;
+
+    letter-spacing: -2px;
+
+    color:#063970;
+
+}
+
+
+
+/* 二级标题 */
+
+.md-typeset h2 {
+
+    margin-top: 4rem;
+
+    font-size:2.2rem;
+
+    color:#006d77;
+
+}
+
+
+
+/* Hero区域 */
+
+
+hero {
+
+  
+
+padding:120px 60px;
+
+  
+
+margin:-2rem -1rem 5rem -1rem;
+
+  
+
+border-radius:
+
+0 0 60px 60px;
+
+  
+
+background:
+
+  
+
+linear-gradient(
+
+rgba(0,40,70,.75),
+
+rgba(0,120,130,.75)
+
+),
+
+url("/images/pexels-jess-vide-4321419.jpg");
+
+  
+  
+
+background-size:cover;
+
+background-position:center;
+
+  
+  
+
+color:white;
+
+  
+
+min-height:600px;
+
+  
+
+display:flex;
+
+  
+
+flex-direction:column;
+
+  
+
+justify-content:center;
+
+  
+  
+
+box-shadow:
+
+  
+
+0 40px 100px rgba(0,0,0,.25);
+
+  
+
+}
+
+  
+  
+
+.hero h1 {
+
+  
+
+color:white;
+
+  
+
+font-size:5rem;
+
+  
+
+}
+
+  
+  
+
+.hero p {
+
+  
+
+font-size:1.5rem;
+
+  
+
+max-width:700px;
+
+  
+
+}
+
+/* 卡片 */
+
+
+.grid.cards > ul > li {
+
+
+border-radius:25px;
+
+
+background:white;
+
+
+box-shadow:
+
+0 15px 40px rgba(0,0,0,.08);
+
+
+transition:.3s;
+
+
+}
+
+
+.grid.cards > ul > li:hover {
+
+
+transform:
+
+translateY(-10px);
+
+
+}
+
+
+/* 图片 */
+
+img {
+
+border-radius:25px;
+
+}
+
+
+
+/* 引用 */
+
+blockquote {
+
+
+border-left:
+
+5px solid #00b4d8;
+
+
+background:
+
+rgba(0,180,216,.08);
+
+
+padding:20px;
+
+
+border-radius:15px;
+
+
+}
+
+
+.md-typeset h2 {
+
+animation:
+
+fadein .8s ease;
+
+}
+
+
+@keyframes fadein {
+
+
+from {
+
+opacity:0;
+
+transform:
+translateY(30px);
+
+}
+
+
+to {
+
+opacity:1;
+
+transform:
+translateY(0);
+
+}
+
+}
