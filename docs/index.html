@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>IDEC Wiki · Semi-rational Engineering of the Marine Sulfur-Cycle Enzyme MddH</title>
+<meta name="description" content="IDEC 队伍 wiki：通过半理性设计与干湿闭环，改造海洋来源的 MddH 甲基转移酶，把废气中的无机硫 H₂S 转化为有机硫平台分子 DMS。">
+<link rel="icon" href="assets/img/favicon.png">
+<link rel="stylesheet" href="assets/css/style.css">
+<noscript>
+<style>
+  /* fallback when JavaScript is off: no loader trap, everything visible */
+  .loader { display: none !important }
+  [data-reveal] { opacity: 1 !important; transform: none !important }
+  .drawer, .to-top { display: none !important }
+  .scene-section { height: auto }
+  .scene-sticky { position: static; height: auto; padding: 70px 0 }
+  .scene-copy { display: grid; gap: 14px }
+  .scene-step { position: static; opacity: 1; transform: none }
+  .hero__scroll { display: none }
+</style>
+</noscript>
+</head>
+<body>
+
+<!-- ============ 加载界面（可换图片 + 小鱼围着 idec 游动） ============ -->
+<div class="loader" id="loader" role="status" aria-live="polite">
+  <div class="loader__sea" aria-hidden="true">
+    <span data-torn-self data-torn="18" data-torn-edges="top" data-torn-var="--clip" data-torn-seed="loader-sea-1"></span>
+    <span data-torn-self data-torn="16" data-torn-edges="top" data-torn-var="--clip" data-torn-seed="loader-sea-2"></span>
+    <span data-torn-self data-torn="14" data-torn-edges="top" data-torn-var="--clip" data-torn-seed="loader-sea-3"></span>
+  </div>
+  <div class="loader__bubbles" aria-hidden="true"></div>
+
+  <div class="loader__inner">
+    <!-- 在这里放你们自己的图片：把文件命名为 loader-art.png 放进 assets/img/ -->
+    <div class="loader__slot" data-img-slot data-torn-self data-torn="10" data-torn-var="--clip" data-torn-seed="loader-slot">
+      <img src="assets/img/loader-art.png" alt="IDEC team photo">
+      <span class="slot-hint">Add your image here<br><code>assets/img/loader-art.png</code></span>
+    </div>
+
+    <div class="loader__orbit">
+      <div class="loader__ring" aria-hidden="true">
+        <span class="swimmer"><svg viewBox="0 0 120 92"><use href="#fish-swim"></use></svg></span>
+      </div>
+      <div class="loader__ring loader__ring--slow" aria-hidden="true">
+        <span class="swimmer"><svg viewBox="0 0 124 72" style="color:#8ed07a"><use href="#fish-sil"></use></svg></span>
+      </div>
+      <div class="loader__ring loader__ring--fast" aria-hidden="true">
+        <span class="swimmer"><svg viewBox="0 0 124 72" style="color:#f7d472"><use href="#fish-sil"></use></svg></span>
+      </div>
+      <div class="loader__word" aria-label="IDEC">
+        <span>i</span><span>d</span><span>e</span><span>c</span>
+      </div>
+    </div>
+
+    <div class="loader__label">Loading<i>.</i><i>.</i><i>.</i></div>
+    <div class="loader__bar" data-torn-self data-torn="16" data-torn-edges="all" data-torn-var="--clip" data-torn-seed="loader-bar"><i></i></div>
+    <p class="loader__note">IDEC WIKI · MddH · MARINE SULFUR CYCLE</p>
+  </div>
+</div>
+
+<div class="read-progress" aria-hidden="true"></div>
+
+<!-- ============ 顶部导航（左：logo 位 / 右：三杠折叠菜单） ============ -->
+<header class="site-header">
+  <div class="site-header__inner">
+    <a class="logo-slot" href="index.html">
+      <!-- 新增 logo（在原 logo 之前）：把图片放到 assets/img/logo-2.png 即自动显示；没有图片时显示下面的占位字 -->
+      <span class="logo-slot__mark" data-img-slot data-torn-self data-torn="9" data-torn-var="--clip" data-torn-seed="logo-mark-2">
+        <img src="assets/img/logo-2.png" alt="Ocean University of China logo" style="filter:none; padding:3px">
+        <span class="logo-slot__fallback">OUC</span>
+      </span>
+      <!-- 在这里放 logo：assets/img/logo.png（透明底 PNG 最佳） -->
+      <span class="logo-slot__mark" data-img-slot data-torn-self data-torn="9" data-torn-var="--clip" data-torn-seed="logo-mark">
+        <img src="assets/img/logo.png" alt="IDEC logo">
+        <span class="logo-slot__fallback">IDEC</span>
+      </span>
+      <span class="logo-slot__text">
+        <b>IDEC WIKI</b>
+        <small>MddH Directed Evolution</small>
+      </span>
+    </a>
+
+    <button class="burger" type="button" aria-label="Open navigation menu" aria-expanded="false" aria-controls="drawer">
+      <span class="burger__lines" aria-hidden="true"><i></i><i></i><i></i></span>
+    </button>
+  </div>
+</header>
+
+<!-- ============ 折叠抽屉：四个板块 ============ -->
+<div class="drawer" id="drawer">
+  <div class="drawer__scrim" aria-hidden="true"></div>
+  <div class="drawer__panel" role="dialog" aria-modal="true" aria-label="Site navigation">
+    <p class="drawer__title">Index</p>
+    <nav class="drawer__nav">
+      <a class="drawer__link" href="index.html">
+        <span class="drawer__num">01</span>
+        <span><b>Home</b><small>Home · project overview and updates</small></span>
+        <span><svg viewBox="0 0 24 24" width="20" aria-hidden="true"><use href="#ic-arrow"></use></svg></span>
+      </a>
+      <a class="drawer__link" href="team.html">
+        <span class="drawer__num">02</span>
+        <span><b>Team</b><small>Photo wall · click a portrait to flip it</small></span>
+        <span><svg viewBox="0 0 24 24" width="20" aria-hidden="true"><use href="#ic-arrow"></use></svg></span>
+      </a>
+      <a class="drawer__link" href="project.html">
+        <span class="drawer__num">03</span>
+        <span><b>Project</b><small>Description / Design / Results …</small></span>
+        <span><svg viewBox="0 0 24 24" width="20" aria-hidden="true"><use href="#ic-arrow"></use></svg></span>
+      </a>
+      <a class="drawer__link" href="documentation.html">
+        <span class="drawer__num">04</span>
+        <span><b>Documentation</b><small>Lab Notebook / Download</small></span>
+        <span><svg viewBox="0 0 24 24" width="20" aria-hidden="true"><use href="#ic-arrow"></use></svg></span>
+      </a>
+      <a class="drawer__link" href="challenge.html">
+        <span class="drawer__num">05</span>
+        <span><b>Challenge</b><small>Challenge · pRK24 conjugation control</small></span>
+        <span><svg viewBox="0 0 24 24" width="20" aria-hidden="true"><use href="#ic-arrow"></use></svg></span>
+      </a>
+    </nav>
+
+    <div class="drawer__art" aria-hidden="true">
+      <svg viewBox="0 0 120 92" width="82"><use href="#fish-swim"></use></svg>
+      <svg viewBox="0 0 130 130" width="62" style="color:#8ed07a"><use href="#coral-fan"></use></svg>
+      <svg viewBox="0 0 90 180" width="26"><use href="#kelp"></use></svg>
+    </div>
+    <p class="drawer__foot">IDEC · Engineering the marine sulfur-cycle enzyme MddH<br>Content under continuous update · <span data-year>2026</span></p>
+  </div>
+</div>
+
+<main>
+
+<!-- ============ HERO ============ -->
+<section class="hero">
+  <div class="hero__layers" aria-hidden="true">
+    <span class="hero__layer hero__skyline" data-torn-self data-torn="20" data-torn-edges="top" data-torn-var="--clip" data-torn-seed="hero-sky"></span>
+    <span class="hero__layer hero__wave-1" data-torn-self data-torn="18" data-torn-edges="top" data-torn-var="--clip" data-torn-seed="hero-w1"></span>
+    <span class="hero__layer hero__wave-2" data-torn-self data-torn="16" data-torn-edges="top" data-torn-var="--clip" data-torn-seed="hero-w2"></span>
+    <span class="hero__layer hero__wave-3" data-torn-self data-torn="14" data-torn-edges="top" data-torn-var="--clip" data-torn-seed="hero-w3"></span>
+  </div>
+  <div class="hero__bubbles" aria-hidden="true"></div>
+
+  <span class="floater" style="left:6%;top:20%;width:132px" data-parallax="0.05" aria-hidden="true">
+    <svg viewBox="0 0 120 92"><use href="#fish-swim"></use></svg>
+  </span>
+  <span class="floater" style="right:8%;top:30%;width:150px;--delay:-2.5s" data-parallax="0.09" aria-hidden="true">
+    <svg viewBox="0 0 130 130"><use href="#coral-branch"></use></svg>
+  </span>
+  <span class="floater" style="right:20%;bottom:22%;width:74px;--delay:-4s" data-parallax="0.03" aria-hidden="true">
+    <svg viewBox="0 0 100 130"><use href="#jelly"></use></svg>
+  </span>
+  <span class="floater" style="left:14%;bottom:16%;width:46px;--delay:-1.2s" data-parallax="0.07" aria-hidden="true">
+    <svg viewBox="0 0 90 180"><use href="#kelp"></use></svg>
+  </span>
+
+  <div class="hero__inner wrap">
+    <span class="hero__badge">
+      <svg viewBox="0 0 100 100" aria-hidden="true"><use href="#mark"></use></svg>
+      IDEC  Wiki
+    </span>
+    <h1>A new enzyme from the sea<br><em>engineered to do more</em></h1>
+    <p class="hero__sub">
+      <b>MddH</b> is an SAM-dependent methyltransferase of marine microbial origin that performs two successive methylations on waste-gas-derived
+      <b>hydrogen sulfide (H₂S)</b>to give <b>methanethiol (MeSH)</b>, and then the organosulfur platform molecule <b>dimethyl sulfide (DMS)</b>. It is further converted into the organosulfur platform molecule<b>dimethyl sulfide (DMS)</b>. Wild-type MddH has low affinity for H₂S and suffers severe substrate inhibition at high sulfide concentrations; through semi-rational design and an iterative dry-lab / wet-lab loop we successfully enhanced its catalytic performance.
+    </p>
+    <div class="hero__cta row">
+      <a class="btn btn--sea" href="project.html">
+        View Project
+        <svg viewBox="0 0 24 24" width="18" aria-hidden="true"><use href="#ic-arrow"></use></svg>
+      </a>
+      
+    </div>
+
+    <div class="hero__cards">
+      <div class="hero__chip"><b>Key enzyme</b>MddH (SAM-dependent methyltransferase)</div>
+      <div class="hero__chip"><b>Reaction</b>H₂S → MeSH → DMS</div>
+      <div class="hero__chip"><b>Strategy</b>Semi-rational design + DBTL loop</div>
+      <div class="hero__chip"><b>Best variant</b>E91Q · DMS +5.1%</div>
+    </div>
+  </div>
+
+  <div class="hero__scroll" aria-hidden="true"><span>Scroll</span><i></i></div>
+</section>
+
+<!-- ============ challenge指路（醒目入口） ============ -->
+<section class="band band--deep on-dark" id="challenge">
+  <div class="tear tear--top" data-torn-self data-torn="22" data-torn-edges="top" data-torn-var="--clip" data-torn-seed="tear-challenge" aria-hidden="true"></div>
+  <div class="wrap">
+    <span class="eyebrow" data-reveal>iDEC 2026 Challenge</span>
+    <h2 data-reveal>Fitting pRK24 conjugation with a tunable “throttle”</h2>
+    <p class="lede wrap--narrow" data-reveal style="margin-bottom:1.4rem">
+      Beyond engineering MddH, we also took part in the iDEC 2026 Challenge: using <b>the pRK24 conjugation system</b>as our target, we designed a candidate-regulator matrix, a standardized three-day protocol and the seven required controls, and evaluated regulation through conjugation efficiency and composite performance scores. The full design, protocols and scoring tables live on a dedicated page.
+    </p>
+    <div class="hero__cards" style="margin-top:0">
+      <div class="hero__chip"><b>System</b>pRK24 / RK2 conjugation system</div>
+      <div class="hero__chip"><b>Control</b>KorA · KorB · TrbA candidate regulators</div>
+      <div class="hero__chip"><b>Protocol</b>Three-day standardized protocol + 7 required controls</div>
+      <div class="hero__chip"><b>Readout</b>Conjugation efficiency and composite score S</div>
+    </div>
+    <div class="row" data-reveal style="margin-top:1.8rem">
+      <a class="btn btn--coral" href="challenge.html">
+        Open the Challenge page
+        <svg viewBox="0 0 24 24" width="18" aria-hidden="true"><use href="#ic-arrow"></use></svg>
+      </a>
+      <a class="btn btn--ghost" href="challenge.html#scoring">View scoring metrics & summary table</a>
+    </div>
+  </div>
+</section>
+
+<!-- ============ ABOUT ============ -->
+<section class="band band--paper" id="about">
+  <div class="tear tear--top" data-torn-self data-torn="22" data-torn-edges="top" data-torn-var="--clip" data-torn-seed="tear-about" aria-hidden="true"></div>
+  <div class="wrap">
+    <span class="eyebrow" data-reveal>About the project</span>
+    <h2 data-reveal>Handing waste-gas sulfur to a marine enzyme</h2>
+    <p class="lede wrap--narrow" style="margin:0 0 2.6rem" data-reveal>
+      H₂S is a common inorganic sulfur pollutant in industrial waste gas, whereas DMS is a platform molecule linking inorganic sulfur to organosulfur chemicals. Our goal is to let MddH of marine microbial origin convert the former efficiently into the latter — and the first step is to understand why it is not fast enough yet.
+    </p>
+
+    <div class="card-grid">
+      <article class="paper" data-reveal data-torn="14" data-torn-var="--clip" data-torn-seed="about-1">
+        <span class="eyebrow">Question</span>
+        <h3>What we set out to answer</h3>
+        <p>Which residues in the substrate-binding pocket govern MddH catalysis, and can replacing them improve the efficiency of H₂S → MeSH → DMS conversion?</p>
+        <p class="muted">Keywords: ternary complex model · binding pocket · stability ΔΔG · DBTL loop</p>
+      </article>
+
+      <article class="paper paper--mist" data-reveal data-torn="14" data-torn-var="--clip" data-torn-seed="about-2">
+        <span class="eyebrow">Methods</span>
+        <h3>How we do it</h3>
+        <ul>
+          <li>Homology alignment plus molecular docking to build the MddH–SAM–H₂S ternary complex model</li>
+          <li>AlphaFold3 structure prediction, molecular dynamics simulation and FoldX ΔΔG calculations to filter out destabilizing substitutions</li>
+          <li>Site-directed mutagenesis to build single and combinatorial variants, expressed in <i>E. coli</i> BL21(DE3)</li>
+          <li>Crude-lysate catalysis and headspace GC quantification of MeSH and DMS</li>
+          <li>Wet-lab results fed back to the dry-lab team, whose multidimensional consensus strategy nominates the next-generation candidates</li>
+        </ul>
+      </article>
+
+      <article class="paper paper--sand" data-reveal data-torn="14" data-torn-var="--clip" data-torn-seed="about-3">
+        <span class="eyebrow">Why it matters</span>
+        <h3>Why it matters</h3>
+        <p>DMS can be further oxidized to DMSO, or serve as a methyl/sulfur donor precursor for the biosynthesis of methionine and sulfur-containing fine chemicals — it links inorganic and organic sulfur.</p>
+        <p class="muted">In other words: engineering this single enzyme provides a promising biological part for valorizing industrial waste sulfur.</p>
+      </article>
+    </div>
+
+    <div class="note" style="margin-top:2.6rem" data-reveal>
+      <svg viewBox="0 0 24 24" aria-hidden="true"><use href="#ic-info"></use></svg>
+      <div>
+        <b>Data sources</b>
+        The numbers on this page come from the project's formal paper: crude-lysate activity of five variants (n = 3), FoldX stability predictions and the Route B consensus ranking.
+      </div>
+    </div>
+
+    <div class="stats" style="margin-top:2rem">
+      <div class="stat" data-reveal><b data-count="3" data-from="1">3</b><span>Key residues (E63 / E91 / T108)</span></div>
+      <div class="stat" data-reveal><b data-count="5" data-from="2">5</b><span>Site-directed variants characterized</span></div>
+      <div class="stat" data-reveal><b data-count="855" data-from="200">855</b><span>Pocket saturation-scan candidates (in silico,Waiting for verification)</span></div>
+      <div class="stat" data-reveal><b data-count="5.1" data-from="1" data-decimals="1" data-suffix="%">5.1%</b><span>Relative DMS-activity gain of E91Q</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 长卷：从浑浊到生机 ============ -->
+<section class="scene-section" id="heal" aria-label="Scroll-driven torn-paper illustration of the ocean">
+  <div class="tear tear--hang" style="--band:#f7f1e2" data-torn-self data-torn="20" data-torn-edges="bottom" data-torn-var="--clip" data-torn-seed="tear-scene" aria-hidden="true"></div>
+  <div class="scene-sticky">
+    <div class="scene-svg">
+      <svg viewBox="0 0 1440 810" preserveAspectRatio="xMidYMid slice" role="img"
+           aria-label="撕纸拼贴插画：冒烟的火山与工厂，随页面下滑逐渐变成生机勃勃的绿色海洋，代表硫化物的绿色生物转化">
+        <defs>
+          <filter id="soft" x="-40%" y="-40%" width="180%" height="180%">
+            <feGaussianBlur stdDeviation="26"></feGaussianBlur>
+          </filter>
+          <linearGradient id="sky-fade" x1="0" y1="0" x2="0" y2="1">
+            <stop id="sky-fade-a" offset="0" stop-color="#6d6a5e" stop-opacity="0"></stop>
+            <stop id="sky-fade-b" offset="1" stop-color="#6d6a5e" stop-opacity=".95"></stop>
+          </linearGradient>
+        </defs>
+
+        <!-- 天空 -->
+        <rect id="sky-top" x="0" y="0" width="1440" height="810" fill="#3f3c34"></rect>
+        <rect id="sky-bottom" x="0" y="240" width="1440" height="240" fill="url(#sky-fade)"></rect>
+        <circle id="sunGlow" cx="1140" cy="170" r="170" fill="#f7d472" opacity=".1" filter="url(#soft)"></circle>
+        <circle id="sun" cx="1140" cy="170" r="58" fill="#c9c2ac"></circle>
+        <rect id="haze" x="0" y="0" width="1440" height="470" fill="#8d8a7c" opacity=".72"></rect>
+
+        <!-- 远山 -->
+        <path id="hill-far" fill="#4a4740"
+              d="M0 470C120 430 220 452 340 436 470 419 560 445 700 428 840 411 960 444 1090 430 1220 416 1330 440 1440 426L1440 470 0 470Z"></path>
+        <path id="hill-mid" fill="#3a3832"
+              d="M0 470C150 448 250 462 380 452 520 441 640 458 780 448 920 438 1050 456 1190 446 1300 438 1380 452 1440 444L1440 470 0 470Z"></path>
+
+        <!-- 火山（撕纸拼贴） -->
+        <path id="volcano" fill="#33322d"
+              d="M96 470 372 258 430 262 470 244 520 266 588 250 820 470Z"></path>
+        <path id="volcano-veins" opacity=".5" fill="none" stroke="#e2664a" stroke-width="9" stroke-linecap="round"
+              d="M470 250 452 300 480 330 456 392 492 424 470 470M372 300 396 336 372 372M560 290 540 330 566 362 546 402"></path>
+
+        <!-- 工厂烟囱 -->
+        <g id="chimneys" fill="#2b2a26">
+          <rect x="838" y="316" width="30" height="112"></rect>
+          <rect x="898" y="286" width="30" height="142"></rect>
+          <rect x="962" y="336" width="26" height="92"></rect>
+          <path d="M804 470 1016 470 1016 410 804 410Z"></path>
+        </g>
+
+        <!-- 烟 -->
+        <g id="smoke" fill="#b9b4a6" opacity=".85">
+          <circle cx="853" cy="300" r="26"></circle>
+          <circle cx="913" cy="268" r="34"></circle>
+          <circle cx="975" cy="318" r="22"></circle>
+          <circle cx="833" cy="228" r="38"></circle>
+          <circle cx="900" cy="196" r="44"></circle>
+          <circle cx="966" cy="230" r="30"></circle>
+          <circle cx="862" cy="136" r="52"></circle>
+        </g>
+
+        <!-- 海：三层撕纸浪 -->
+        <path id="sea-far" fill="#545147"
+              d="M0 520C120 494 240 546 360 520 480 494 600 546 720 520 840 494 960 546 1080 520 1200 494 1320 546 1440 520L1440 810 0 810Z"></path>
+        <path id="sea-mid" fill="#43413a"
+              d="M0 592C120 566 240 618 360 592 480 566 600 618 720 592 840 566 960 618 1080 592 1200 566 1320 618 1440 592L1440 810 0 810Z"></path>
+        <path id="sea-near" fill="#2e2d29"
+              d="M0 674C120 648 240 700 360 674 480 648 600 700 720 674 840 648 960 700 1080 674 1200 648 1320 700 1440 674L1440 810 0 810Z"></path>
+
+        <!-- 浪花（恢复生机后出现） -->
+        <g id="foam" fill="none" stroke="#f7f1e2" stroke-width="7" stroke-linecap="round">
+          <path d="M0 512C120 486 240 538 360 512 480 486 600 538 720 512 840 486 960 538 1080 512 1200 486 1320 538 1440 512" opacity="0"></path>
+          <path d="M0 584C120 558 240 610 360 584 480 558 600 610 720 584 840 558 960 610 1080 584 1200 558 1320 610 1440 584" opacity="0"></path>
+          <path d="M0 666C120 640 240 692 360 666 480 640 600 692 720 666 840 640 960 692 1080 666 1200 640 1320 692 1440 666" opacity="0"></path>
+        </g>
+
+        <!-- 生命：珊瑚 / 鱼 / 水母 / 海藻（撕纸拼贴） -->
+        <g id="life" opacity="0">
+          <g id="life-plants">
+            <use href="#kelp" x="88" y="600" width="80" height="160"></use>
+            <use href="#kelp" x="150" y="640" width="64" height="128" style="--c1:#2f8a52;--c2:#a5da8a"></use>
+            <use href="#kelp" x="1246" y="612" width="72" height="146" style="--c1:#357f4d"></use>
+            <use href="#kelp" x="1300" y="656" width="56" height="112" style="--c2:#8ed07a"></use>
+          </g>
+          <g id="life-corals">
+            <use href="#coral-fan" x="218" y="646" width="150" height="150"></use>
+            <use href="#coral-branch" x="1050" y="668" width="140" height="140" style="--c1:#efa94c"></use>
+            <use href="#coral-branch" x="980" y="706" width="100" height="100" style="--c1:#e2664a"></use>
+            <use href="#shell" x="392" y="736" width="62" height="62" style="--c1:#f7d472"></use>
+          </g>
+          <g id="life-fish">
+            <use href="#fish-swim" x="520" y="596" width="132" height="101"></use>
+            <use href="#fish-swim" x="700" y="668" width="94" height="72" style="--c1:#13a189;--c2:#0d5f6b"></use>
+            <use href="#fish-sil" x="330" y="628" width="120" height="70" style="color:#0a6f6a"></use>
+            <use href="#fish-sil" x="880" y="600" width="102" height="60" style="color:#0f7d7a"></use>
+            <use href="#fish-swim" x="196" y="720" width="76" height="58" style="--c1:#f7d472;--c2:#efa94c"></use>
+          </g>
+          <g id="life-small">
+            <use href="#jelly" x="618" y="540" width="66" height="86"></use>
+            <use href="#shell" x="1120" y="700" width="52" height="52" style="--c1:#f7f1e2"></use>
+            <circle cx="470" cy="700" r="6" fill="#bdeee2" opacity=".8"></circle>
+            <circle cx="820" cy="742" r="5" fill="#bdeee2" opacity=".7"></circle>
+            <circle cx="952" cy="678" r="7" fill="#bdeee2" opacity=".65"></circle>
+            <circle cx="286" cy="770" r="6" fill="#bdeee2" opacity=".6"></circle>
+            <circle cx="1216" cy="748" r="8" fill="#bdeee2" opacity=".7"></circle>
+          </g>
+          <g id="life-plankton">
+            <g fill="#8ed07a" opacity=".9">
+              <circle cx="140" cy="534" r="5"></circle>
+              <circle cx="272" cy="556" r="4"></circle>
+              <circle cx="404" cy="532" r="6"></circle>
+              <circle cx="536" cy="560" r="4"></circle>
+              <circle cx="668" cy="536" r="5"></circle>
+              <circle cx="800" cy="558" r="4"></circle>
+              <circle cx="932" cy="534" r="6"></circle>
+              <circle cx="1064" cy="560" r="4"></circle>
+              <circle cx="1196" cy="536" r="5"></circle>
+              <circle cx="1320" cy="556" r="4"></circle>
+            </g>
+          </g>
+        </g>
+
+        <!-- DMSP → DMS → 云凝结核 -->
+        <g id="molecules" opacity="0">
+          <g id="mol-1"><use href="#chip-h2s" x="356" y="486" width="96" height="35"></use></g>
+          <g id="mol-2"><use href="#chip-mesh" x="742" y="500" width="112" height="41"></use></g>
+          <g id="mol-3"><use href="#chip-sam" x="520" y="440" width="100" height="37"></use></g>
+          <g id="mol-4"><use href="#chip-dms" x="900" y="452" width="92" height="37"></use></g>
+          <g id="mol-5"><use href="#chip-dms" x="640" y="352" width="88" height="36" style="--c1:#f7d472"></use></g>
+        </g>
+
+        <!-- 云 -->
+        <g id="scene-cloud" opacity="0">
+          <use href="#cloud-paper" x="700" y="120" width="300" height="160" style="--c1:#e6f4f2"></use>
+          <use href="#cloud-paper" x="940" y="76" width="240" height="128" style="--c1:#f7f1e2"></use>
+          <use href="#cloud-paper" x="520" y="70" width="220" height="117" style="--c1:#d7efe9"></use>
+        </g>
+
+        <!-- 海鸟 -->
+        <g id="birds" opacity="0" fill="none" stroke="#12262f" stroke-width="4" stroke-linecap="round">
+          <path d="M300 188c14-14 22-14 34 0 12-14 20-14 34 0"></path>
+          <path d="M382 228c10-10 16-10 25 0 9-10 15-10 25 0"></path>
+          <path d="M258 244c8-8 13-8 20 0 7-8 12-8 20 0"></path>
+        </g>
+
+        <!-- 场景标注（撕纸标签） -->
+        <g id="scene-label-a" opacity="1">
+          <rect x="60" y="120" width="620" height="58" rx="8" fill="#12262f" opacity=".72"></rect>
+          <text class="scene-label" x="86" y="158" fill="#f7f1e2">Wild-type MddH · low affinity, substrate-inhibited</text>
+        </g>
+        <g id="scene-label-b" opacity="0">
+          <rect x="60" y="120" width="560" height="58" rx="8" fill="#0d5f6b" opacity=".82"></rect>
+          <text class="scene-label" x="86" y="158" fill="#f7f1e2">Engineered variant · E91Q lifts DMS by 5.1%</text>
+        </g>
+      </svg>
+    </div>
+
+    <div class="scene-hud">
+      <div class="scene-copy">
+        <article class="scene-step is-active">
+          <p class="scene-step__no">01 · Scientific question</p>
+          <h3>Waste-gas sulfur and one marine enzyme</h3>
+          <p>H₂S is a toxic inorganic sulfur species in industrial waste gas; DMS is a platform molecule with downstream value. MddH of marine microbial origin methylates it in two successive steps to reach DMS, yet the wild-type enzyme binds gaseous H₂S poorly and is strongly inhibited at high sulfide levels.</p>
+        </article>
+        <article class="scene-step">
+          <p class="scene-step__no">02 · Computational design</p>
+          <h3>Compute first, then pipette</h3>
+          <p>Homology alignment plus molecular docking to build the MddH–SAM–H₂S ternary complex model; AlphaFold3 structures,
+             molecular dynamics to validate binding poses and FoldX ΔΔG calculations that discard destabilizing substitutions first pointed to three sites: E63, E91 and T108.</p>
+        </article>
+        <article class="scene-step">
+          <p class="scene-step__no">03 · Wet-lab validation</p>
+          <h3>Let the data speak</h3>
+          <p>Five variants were built and expressed in <i>E. coli</i> , then assayed with crude lysates and headspace GC. The result was unambiguous: E91Q raised DMS production by 5.1% (P = 0.0045), whereas mutating E63 dropped activity below 10% of wild type.</p>
+        </article>
+        <article class="scene-step">
+          <p class="scene-step__no">04 · Closing the loop</p>
+          <h3>Turning setbacks into inputs</h3>
+          <p>The lessons of round one were written back into the model: three-predictor consensus + a stability red line + a ligand conformational gate, which generated 855 candidates.
+             Next we will validate the next-generation candidates and co-express them with the monooxygenase Tmm, exploring the potential of the H₂S → MeSH → DMS → DMSO cascade.</p>
+        </article>
+      </div>
+      <div class="scene-rail">
+        <span>Progress</span>
+        <div class="scene-rail__track" aria-hidden="true"><div class="scene-rail__fill"></div></div>
+      </div>
+    </div>
+    <p class="scene-legend">Scroll down · from wild type to engineered variant</p>
+  </div>
+</section>
+
+
+<!-- ============ 环境保护意义 ============ -->
+<section class="band band--sand" id="impact">
+  <div class="tear tear--top" data-torn-self data-torn="22" data-torn-edges="top" data-torn-var="--clip" data-torn-seed="tear-impact" aria-hidden="true"></div>
+  <div class="wrap">
+    <span class="eyebrow" data-reveal>Why we care</span>
+    <h2 data-reveal>Why this matters for the environment and for industry</h2>
+    <p class="lede wrap--narrow" style="margin-bottom:2.6rem" data-reveal>
+      The marine sulfur cycle is not an abstract term: it links marine microbes, atmospheric chemistry and industrially emitted sulfur along a single pathway.
+    </p>
+
+    <div class="impact">
+      <article class="paper" data-reveal data-torn="12" data-torn-var="--clip" data-torn-seed="impact-1">
+        <span class="impact__icon" style="color:#0d5f6b" aria-hidden="true">
+          <svg viewBox="0 0 64 64"><use href="#ic-climate"></use></svg>
+        </span>
+        <h3>Atmospheric chemistry & climate</h3>
+        <p>DMS is one of the main forms in which the ocean delivers sulfur to the atmosphere; its oxidation product, sulfate aerosol, can act as cloud condensation nuclei and thus affect cloud albedo and the surface radiation budget.</p>
+        <p class="muted">Understanding the MddH route also sharpens our picture of where marine DMS comes from.</p>
+      </article>
+
+      <article class="paper" data-reveal data-torn="12" data-torn-var="--clip" data-torn-seed="impact-2">
+        <span class="impact__icon" aria-hidden="true">
+          <svg viewBox="0 0 64 64"><use href="#ic-eco"></use></svg>
+        </span>
+        <h3>Marine microbial resources</h3>
+        <p>MddH comes from marine microorganisms and is one sample of marine genetic resources; clarifying its function and structural mechanism builds the groundwork for developing functional enzymes from the ocean.</p>
+        <p class="muted">From “finding a strain” to “actually using an enzyme part”.</p>
+      </article>
+
+      <article class="paper" data-reveal data-torn="12" data-torn-var="--clip" data-torn-seed="impact-3">
+        <span class="impact__icon" aria-hidden="true">
+          <svg viewBox="0 0 64 64"><use href="#ic-cycle"></use></svg>
+        </span>
+        <h3>Waste-sulfur valorization</h3>
+        <p>Waste-gas H₂S is traditionally desulfurized rather than converted into valuable products. Turning H₂S into a platform molecule such as DMS means that engineering this enzyme supplies a promising biological part for valorizing industrial waste sulfur.</p>
+        <p class="muted">The next-stage goal is to extend the cascade to DMSO: H₂S → MeSH → DMS → DMSO.</p>
+      </article>
+    </div>
+
+
+
+
+    
+    <div class="quote" style="margin-top:3rem" data-reveal data-torn="14" data-torn-var="--clip" data-torn-seed="quote" data-torn-self>
+      Predict, validate, improve —<br>turning every setback into an input for the next design round.
+      <p style="font-family:var(--font-body);font-size:.86rem;margin-top:1rem;color:rgba(247,241,226,.7)">
+        — from the first page of our lab notebook
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 快捷入口 ============ -->
+<section class="band band--paper" id="explore">
+  <div class="tear tear--top" data-torn-self data-torn="22" data-torn-edges="top" data-torn-var="--clip" data-torn-seed="tear-explore" aria-hidden="true"></div>
+  <div class="wrap">
+    <span class="eyebrow" data-reveal>Explore the wiki</span>
+    <h2 data-reveal>Five sections, one story</h2>
+    <div class="card-grid" style="margin-top:2rem">
+      <a class="paper" style="text-decoration:none" href="team.html" data-reveal data-torn="12" data-torn-var="--clip" data-torn-seed="nav-1">
+        <span class="eyebrow">01 · Team</span>
+        <h3>Photo wall</h3>
+        <p>Click a portrait to flip it and meet another side of the team.</p>
+      </a>
+      <a class="paper paper--mist" style="text-decoration:none" href="project.html" data-reveal data-torn="12" data-torn-var="--clip" data-torn-seed="nav-2">
+        <span class="eyebrow">02 · Project</span>
+        <h3>The full project</h3>
+        <p>Background & hypothesis · Design · Results · Supplement · Protocols</p>
+      </a>
+      <a class="paper paper--sand" style="text-decoration:none" href="documentation.html" data-reveal data-torn="12" data-torn-var="--clip" data-torn-seed="nav-3">
+        <span class="eyebrow">03 · Documentation</span>
+        <h3>Records & downloads</h3>
+        <p>Lab notebook and downloadable report files.</p>
+      </a>
+      <a class="paper" style="text-decoration:none" href="#heal" data-reveal data-torn="12" data-torn-var="--clip" data-torn-seed="nav-4">
+        <span class="eyebrow">04 · Story</span>
+        <h3>The scroll: from wild type to engineered variant</h3>
+        <p>Replay the scrolling scene that runs from waste-gas H₂S to the platform molecule DMS.</p>
+      </a>
+      <a class="paper paper--mist" style="text-decoration:none" href="challenge.html" data-reveal data-torn="12" data-torn-var="--clip" data-torn-seed="nav-5">
+        <span class="eyebrow">05 · Challenge</span>
+        <h3>Challenge: pRK24 conjugation control</h3>
+        <p>Design, protocols and scoring tables of the iDEC 2026 Challenge.</p>
+      </a>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<!-- ============ 黑色页脚：联系方式与地点 ============ -->
+<footer class="site-footer" id="contact">
+  <div class="tear tear--hang" style="--band:#f7f1e2" data-torn-self data-torn="22" data-torn-edges="bottom" data-torn-var="--clip" data-torn-seed="tear-footer" aria-hidden="true"></div>
+  <div class="wrap">
+    <div class="site-footer__grid">
+      <div class="footer-brand">
+        <svg viewBox="0 0 100 100" aria-hidden="true"><use href="#mark"></use></svg>
+        <div>
+          <h4 style="margin-bottom:.4rem">IDEC</h4>
+          <p class="footer-note">
+            Semi-rational engineering of the marine sulfur-cycle enzyme MddH<br>
+            Turning waste-gas sulfur into a usable platform molecule.
+          </p>
+        </div>
+      </div>
+
+      <div>
+        <h4>Contact</h4>
+        <div class="footer-list">
+          <span class="contact-line" data-copy="idec-team@example.com">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><use href="#ic-mail"></use></svg>
+            zhangyunhui@ouc.edu.cn
+          </span>
+          <span class="contact-line" data-copy=" +86 532-82032721">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><use href="#ic-phone"></use></svg>
+            +86 532-82032721 
+          </span>
+          <span class="contact-line">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><use href="#ic-clock"></use></svg>
+            Monday–Friday, 09:00–18:00
+          </span>
+        </div>
+      </div>
+
+      <div>
+        <h4>Location</h4>
+        <div class="footer-list">
+          <span class="contact-line">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><use href="#ic-pin"></use></svg>
+            Laboratory:Room 305, Chemistry Building, Yushan Campus, Ocean University of China
+          </span>
+          <span class="contact-line">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><use href="#ic-pin"></use></svg>
+            Affiliation: Ocean University of China · College of Marine Life Sciences
+          </span>
+          <span class="contact-line">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><use href="#ic-pin"></use></svg>
+            City: Qingdao, China
+          </span>
+        </div>
+      </div>
+
+      <div>
+        <h4>Site map</h4>
+        <div class="footer-list">
+          <a href="index.html">Home · overview</a>
+          <a href="team.html">Team · photo wall</a>
+          <a href="project.html">Project · full write-up</a>
+          <a href="documentation.html">Documentation · lab records</a>
+        </div>
+        <div class="footer-list" style="margin-top:1rem">
+          <a href="assets/files/idec-report.pdf" data-file="assets/files/idec-report.pdf">
+            ↓ Download the project report (PDF)
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <span>© <span data-year>2026</span> IDEC Team · content licensed under CC BY-SA 4.0</span>
+    </div>
+  </div>
+</footer>
+
+<button class="to-top" type="button" aria-label="Back to top">
+  <svg viewBox="0 0 24 24" width="22" aria-hidden="true"><use href="#ic-up"></use></svg>
+</button>
+
+<script src="assets/js/main.js"></script>
+</body>
+</html>
