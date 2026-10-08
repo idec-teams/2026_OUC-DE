@@ -1,0 +1,619 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+        <link rel="prev" href="../project/">
+      
+      
+      
+        
+      
+      
+      <link rel="icon" href="../img/idec-wiki-logo.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+      
+        <title>Documentation - iDEC 2026 | OUC-DE</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.ec1eaa64.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="light-blue" data-md-color-accent="blue">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#documentation-idec-wiki" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="iDEC 2026 | OUC-DE" class="md-header__button md-logo" aria-label="iDEC 2026 | OUC-DE" data-md-component="logo">
+      
+  <img src="../img/idec-wiki-logo-white-bg.png" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            iDEC 2026 | OUC-DE
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Documentation
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+    
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/idec-teams/2026_OUC-DE" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="iDEC 2026 | OUC-DE" class="md-nav__button md-logo" aria-label="iDEC 2026 | OUC-DE" data-md-component="logo">
+      
+  <img src="../img/idec-wiki-logo-white-bg.png" alt="logo">
+
+    </a>
+    iDEC 2026 | OUC-DE
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/idec-teams/2026_OUC-DE" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../team/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Team
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../project/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Project
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Documentation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Challenge.md" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Challenge
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="documentation-idec-wiki">Documentation · IDEC Wiki</h1>
+<p>============ 页头 ============</p>
+<p>Documentation · records</p>
+<h1 id="lab-records-and-downloads">Lab records and downloads</h1>
+<p>This page has two parts:
+<strong>Lab Notebook</strong>
+a chronological record of every computational and wet-lab step, including setbacks and fixes;
+<strong>Download</strong>
+reports, raw data, computational code and safety documents. The records follow the project's DBTL cycle:
+<strong>Design → Build → Test → Learn</strong>
+。</p>
+<p>Open the Lab Notebook
+Jump to downloads
+============ Lab Notebook ============
+Lab Notebook</p>
+<h2 id="lab-notebook">Lab Notebook</h2>
+<p>Each record answers four questions: what we did, what we observed, what went wrong and what came next. Records 07–09 contain the core data of the paper and the problems they exposed.</p>
+<p>Record 01
+Responsible: Dry-Lab Group</p>
+<h3 id="project-scoping-and-literature-review">Project scoping and literature review</h3>
+<ul>
+<li>Defined the target: the SAM-dependent methyltransferase MddH of marine microbial origin, using the reference sequence from <em>Marinobacter litoralis</em> SW-45（UE2）。</li>
+<li>Mapped the mechanism: H₂S is methylated to MeSH and then to DMS, with SAM as the methyl donor in both steps.</li>
+<li>Explored the application outlook: DMS is a platform molecule that can be oxidized further to DMSO or used for sulfur-containing chemical synthesis.</li>
+</ul>
+<p>Record 02
+Responsible: Dry-Lab Group</p>
+<h3 id="route-a-structure-prediction-and-molecular-docking">Route A: structure prediction and molecular docking</h3>
+<ul>
+<li>AlphaFold3 predicted the apo homotetramer of UE2; molecular dynamics simulations identified residues of interest.</li>
+<li>Molecular docking built the MddH–SAM–H₂S ternary complex model and mapped the substrate-binding pocket.</li>
+<li>Working hypothesis: SAM binding in UE2 is over-stabilized (early docking ≈ −7.9 kcal/mol), so weakening cofactor binding might accelerate turnover.</li>
+<li>Boltz-2 affinity ranking → three sites selected: E63Q, E91Q and T108I.</li>
+</ul>
+<p>Record 03
+Responsible: Dry-Lab Group</p>
+<h3 id="foldx-stability-prediction">FoldX stability prediction</h3>
+<ul>
+<li>Used the FoldX plugin in YASARA-Structure to calculate ΔΔG (ΔG mutant − ΔG wild-type ）。</li>
+<li>E63Q +0.79 and E91Q +0.82 (mildly destabilizing); T108I +0.098 (nearly neutral).</li>
+<li>Double mutant E63Q/E91Q +1.66 (approximately additive); triple mutant +1.53 (weak epistatic compensation by T108I).</li>
+</ul>
+<p>Record 04
+Responsible: Wet-Lab Group</p>
+<h3 id="variant-construction-and-sequencing-validation">Variant construction and sequencing validation</h3>
+<ul>
+<li>Five variants (E63Q, E91Q, T108I, E63Q/E91Q and E63Q/E91Q/T108I) were synthesized by Sangon Biotech (Shanghai).</li>
+<li>Transformed into <em>E. coli</em> BL21(DE3); single colonies were sequenced to confirm that the mutations had been introduced correctly.</li>
+<li>Issue: one batch of PCR products gave weak bands; after adjusting the annealing temperature and extension time and purifying the DNA, normal bands returned.</li>
+</ul>
+<p>Record 05
+Responsible: Wet-Lab Group</p>
+<h3 id="expression-and-crude-lysate-preparation">Expression and crude-lysate preparation</h3>
+<ul>
+<li>Seed culture was inoculated into fresh LB, grown at 37 °C for 2.5 h, then held at 4 °C for 0.5 h.</li>
+<li>Induction with IPTG at a final concentration of 0.1 mM, 16 °C for 18 h.</li>
+<li>Cells were harvested at 4 °C, 8000 rpm, resuspended in PBS and sonicated on ice (5 s on / 10 s off, 1 min per cycle, up to 3 cycles); the supernatant after centrifugation was used as the crude lysate.</li>
+</ul>
+<p>Record 06
+Responsible: Wet-Lab Group</p>
+<h3 id="setting-up-the-hs-gc-assay">Setting up the HS-GC assay</h3>
+<ul>
+<li>200 μL reaction: crude lysate + SAM (1 mM) + MeSH (1 mM), incubated at 28 °C for 3 h.</li>
+<li>The supernatant was transferred into a sealed headspace vial and analysed on an Agilent 8860B GC (N₂ carrier gas), integrating the DMS and MeSH peak areas.</li>
+<li>Calibration curve: √peak area = 3.1854C − 25.261, used to convert peak areas into absolute yields (nmol).</li>
+</ul>
+<p>Record 07
+Responsible: Wet-Lab Group</p>
+<h3 id="round-one-activity-results-crude-lysates">Round-one activity results (crude lysates)</h3>
+<ul>
+<li>Wild-type UE-2: 336.4 ± 2.6 nmol (100%, CV 0.8%).</li>
+<li>E91Q：353.5 ± 7.3 nmol（105.1%，P = 0.0045）；T108I：344.7 ± 7.9 nmol（102.5%，P = 0.199，ns）。</li>
+<li>E63Q: 16.4 ± 0.4 nmol (4.9%); E63Q/E91Q: 10.1 ± 2.7 nmol (3.0%); triple mutant: 29.2 ± 3.8 nmol (8.7%); all three P &lt; 0.0001.</li>
+<li>One-way ANOVA: F(5,12) = 3979.5, P &lt; 0.0001.</li>
+</ul>
+<p>Record 08
+Responsible: Wet-Lab / Dry-Lab Group</p>
+<h3 id="mechanistic-clues-from-the-product-profile">Mechanistic clues from the product profile</h3>
+<ul>
+<li>No DMS peak was detectable for E63Q and its combinatorial variants, whereas MeSH output was comparable to wild type → suggesting that the second step (MeSH → DMS) may be impaired.</li>
+<li>Note: the no-enzyme control in this batch also gave high MeSH peaks (1.24–1.77×10⁷), indicating considerable background interference.</li>
+<li>Quantitative confirmation requires stricter controls (heat-inactivated enzyme, SAM omission), so this is currently only a mechanistic clue.</li>
+</ul>
+<p>Record 09
+Responsible: Wet-Lab Group</p>
+<h3 id="reproducibility-problems-in-the-whole-cell-batch">Reproducibility problems in the whole-cell batch</h3>
+<ul>
+<li>Within the same whole-cell batch, the three wild-type replicates differed almost 20-fold in DMS peak area (CV 90.6%) and one value looked like a recording or transcription error.</li>
+<li>Assessment: the current whole-cell system still lacks adequate control of cell density, induction level and headspace sampling consistency.</li>
+<li>Action: quantitative conclusions rest on the crude-lysate data and whole-cell data are used qualitatively only; next we switch to standardized initial-rate kinetics.</li>
+</ul>
+<p>Record 10
+Responsible: Dry-Lab Group</p>
+<h3 id="route-b-upgrading-to-a-multidimensional-consensus-strategy">Route B: upgrading to a multidimensional consensus strategy</h3>
+<ul>
+<li>Abandoned the single affinity metric in favour of three zero-shot predictors (ProtSSN, ProSST, TranceptEVE) plus the PLACER ligand-conformational gate.</li>
+<li>Added a ThermoMPNN stability red line (ΔΔG &gt; +1 kcal/mol rejected outright) and sequence sanity checks (to avoid numbering errors).</li>
+<li>Saturation scanning of 45 residues within 8 Å of the round-one hits generated 855 single-point candidates (not yet built as a physical library).</li>
+<li>Consensus ranking produced the next-generation priority list: I46L, E91Q, S65T, S44T, V40I, plus E91A/D/N for mechanistic studies.</li>
+</ul>
+<p>Record 11
+Responsible: whole team</p>
+<h3 id="review-and-next-stage-planning">Review and next-stage planning</h3>
+<ul>
+<li>Conclusions: E91Q raised DMS production significantly (~5%); T108I essentially maintained wild-type activity; E63 is indispensable for catalysis; stacking substitutions gave no clear gain.</li>
+<li>Next 1: build and validate the Route B next-generation variants, all read out by standardized initial-rate kinetics.</li>
+<li>Next 2: feed the kinetic data back into the active-learning module, which nominates the next 16–32 variants, closing the DBTL loop.</li>
+<li>Next 3: co-express with the monooxygenase Tmm to explore the H₂S → MeSH → DMS → DMSO cascade and assess waste-sulfur valorization performance.</li>
+</ul>
+<p>============ Download ============
+Download</p>
+<h2 id="download-reports-and-materials">Download reports and materials</h2>
+<p>All files live in
+<strong>assets/files/</strong>
+with filenames matching the paths below — the buttons download them directly. If a click does nothing, your browser is blocking local downloads: open the file straight from the
+<strong>assets/files/</strong>
+folder instead.</p>
+<p>PDF</p>
+<h3 id="project-report">Project report</h3>
+<p>The complete background, design, results and discussion — suitable as the main review document.</p>
+<p>assets/files/idec-report.pdf
+<a href="../assets/files/idec-report.pdf">Download</a>
+XLSX</p>
+<h3 id="hs-gc-raw-data-table">HS-GC raw data table</h3>
+<p>Variant names, DMS and MeSH peak areas, and converted yields (nmol).</p>
+<p>assets/files/idec-data.xlsx
+<a href="../assets/files/idec-data.xlsx">Download</a>
+ZIP</p>
+<h3 id="computational-code-and-candidate-rankings">Computational code and candidate rankings</h3>
+<p>Route A/B prediction pipelines, consensus scores and candidate lists (to be released on GitHub).</p>
+<p>assets/files/idec-model.zip
+<a href="../assets/files/idec-model.zip">Download</a>
+PDF</p>
+<h3 id="laboratory-protocol">Laboratory protocol</h3>
+<p>Full parameters from template preparation, PCR and gel electrophoresis through expression, lysis and HS-GC.</p>
+<p>assets/files/idec-protocol.pdf
+<a href="../assets/files/idec-protocol.pdf">Download</a>
+PDF</p>
+<h3 id="safety-and-ethics-forms">Safety and ethics forms</h3>
+<p>H₂S / methanethiol risk control, plus strain and waste-handling records.</p>
+<p>assets/files/idec-safety.pdf
+<a href="../assets/files/idec-safety.pdf">Download</a>
+<strong>Data availability</strong>
+Wet-lab raw data are stored in
+<code>Wet-lab HS-GC data.xlsx</code>
+(variant names, DMS/MeSH peak areas and yields);The computational code and data are currently available for download via this Wiki, and will be subsequently released on GitHub.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Copyright &copy; 2026 iDEC. CC-BY-4.0 | The International Directed Evolution Competition (iDEC) is a Scottish Charitable Incorporate Organisation (SCIO), registered in Scotland, with charity number：SC050826
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.sections"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+        <script src="../javascripts/config.js"></script>
+      
+        <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+      
+        <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+      
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/tablesort/5.2.1/tablesort.min.js"></script>
+      
+        <script src="../javascripts/tables.js"></script>
+      
+    
+  </body>
+</html>
