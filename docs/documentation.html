@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Documentation · IDEC Wiki</title>
+<meta name="description" content="IDEC 实验记录本（Lab Notebook）与可下载报告、数据、代码与安全材料。">
+<link rel="icon" href="assets/img/favicon.png">
+<link rel="stylesheet" href="assets/css/style.css">
+<noscript>
+<style>
+  /* fallback when JavaScript is off: no loader trap, everything visible */
+  .loader { display: none !important }
+  [data-reveal] { opacity: 1 !important; transform: none !important }
+  .drawer, .to-top { display: none !important }
+  .scene-section { height: auto }
+  .scene-sticky { position: static; height: auto; padding: 70px 0 }
+  .scene-copy { display: grid; gap: 14px }
+  .scene-step { position: static; opacity: 1; transform: none }
+  .hero__scroll { display: none }
+</style>
+</noscript>
+</head>
+<body>
+
+<!-- ============ 加载界面 ============ -->
+<div class="loader" id="loader" role="status" aria-live="polite">
+  <div class="loader__sea" aria-hidden="true">
+    <span data-torn-self data-torn="18" data-torn-edges="top" data-torn-var="--clip" data-torn-seed="loader-sea-1"></span>
+    <span data-torn-self data-torn="16" data-torn-edges="top" data-torn-var="--clip" data-torn-seed="loader-sea-2"></span>
+    <span data-torn-self data-torn="14" data-torn-edges="top" data-torn-var="--clip" data-torn-seed="loader-sea-3"></span>
+  </div>
+  <div class="loader__bubbles" aria-hidden="true"></div>
+
+  <div class="loader__inner">
+    <div class="loader__slot" data-img-slot data-torn-self data-torn="10" data-torn-var="--clip" data-torn-seed="loader-slot">
+      <img src="assets/img/loader-art.png" alt="IDEC team photo">
+      <span class="slot-hint">Add your image here<br><code>assets/img/loader-art.png</code></span>
+    </div>
+
+    <div class="loader__orbit">
+      <div class="loader__ring" aria-hidden="true">
+        <span class="swimmer"><svg viewBox="0 0 120 92"><use href="#fish-swim"></use></svg></span>
+      </div>
+      <div class="loader__ring loader__ring--slow" aria-hidden="true">
+        <span class="swimmer"><svg viewBox="0 0 124 72" style="color:#8ed07a"><use href="#fish-sil"></use></svg></span>
+      </div>
+      <div class="loader__ring loader__ring--fast" aria-hidden="true">
+        <span class="swimmer"><svg viewBox="0 0 124 72" style="color:#f7d472"><use href="#fish-sil"></use></svg></span>
+      </div>
+      <div class="loader__word" aria-label="IDEC">
+        <span>i</span><span>d</span><span>e</span><span>c</span>
+      </div>
+    </div>
+
+    <div class="loader__label">Loading<i>.</i><i>.</i><i>.</i></div>
+    <div class="loader__bar" data-torn-self data-torn="16" data-torn-edges="all" data-torn-var="--clip" data-torn-seed="loader-bar"><i></i></div>
+    <p class="loader__note">IDEC WIKI · MddH · MARINE SULFUR CYCLE</p>
+  </div>
+</div>
+
+<div class="read-progress" aria-hidden="true"></div>
+
+<!-- ============ 顶部导航 ============ -->
+<header class="site-header">
+  <div class="site-header__inner">
+    <a class="logo-slot" href="index.html">
+      <!-- 新增 logo（在原 logo 之前）：把图片放到 assets/img/logo-2.png 即自动显示；没有图片时显示下面的占位字 -->
+      <span class="logo-slot__mark" data-img-slot data-torn-self data-torn="9" data-torn-var="--clip" data-torn-seed="logo-mark-2">
+        <img src="assets/img/logo-2.png" alt="Ocean University of China logo" style="filter:none; padding:3px">
+        <span class="logo-slot__fallback">OUC</span>
+      </span>
+      <span class="logo-slot__mark" data-img-slot data-torn-self data-torn="9" data-torn-var="--clip" data-torn-seed="logo-mark">
+        <img src="assets/img/logo.png" alt="IDEC logo">
+        <span class="logo-slot__fallback">IDEC</span>
+      </span>
+      <span class="logo-slot__text">
+        <b>IDEC WIKI</b>
+        <small>MddH Directed Evolution</small>
+      </span>
+    </a>
+
+    <button class="burger" type="button" aria-label="Open navigation menu" aria-expanded="false" aria-controls="drawer">
+      <span class="burger__lines" aria-hidden="true"><i></i><i></i><i></i></span>
+    </button>
+  </div>
+</header>
+
+<!-- ============ 折叠抽屉 ============ -->
+<div class="drawer" id="drawer">
+  <div class="drawer__scrim" aria-hidden="true"></div>
+  <div class="drawer__panel" role="dialog" aria-modal="true" aria-label="站点导航">
+    <p class="drawer__title">Index</p>
+    <nav class="drawer__nav">
+      <a class="drawer__link" href="index.html">
+        <span class="drawer__num">01</span>
+        <span><b>Home</b><small>Home · project overview and updates</small></span>
+        <span><svg viewBox="0 0 24 24" width="20" aria-hidden="true"><use href="#ic-arrow"></use></svg></span>
+      </a>
+      <a class="drawer__link" href="team.html">
+        <span class="drawer__num">02</span>
+        <span><b>Team</b><small>Photo wall · click a portrait to flip it</small></span>
+        <span><svg viewBox="0 0 24 24" width="20" aria-hidden="true"><use href="#ic-arrow"></use></svg></span>
+      </a>
+      <a class="drawer__link" href="project.html">
+        <span class="drawer__num">03</span>
+        <span><b>Project</b><small>Description / Design / Results …</small></span>
+        <span><svg viewBox="0 0 24 24" width="20" aria-hidden="true"><use href="#ic-arrow"></use></svg></span>
+      </a>
+      <a class="drawer__link" href="documentation.html">
+        <span class="drawer__num">04</span>
+        <span><b>Documentation</b><small>Lab Notebook / Download</small></span>
+        <span><svg viewBox="0 0 24 24" width="20" aria-hidden="true"><use href="#ic-arrow"></use></svg></span>
+      </a>
+      <a class="drawer__link" href="挑战赛.html">
+        <span class="drawer__num">05</span>
+        <span><b>Challenge</b><small>Challenge · pRK24 conjugation control</small></span>
+        <span><svg viewBox="0 0 24 24" width="20" aria-hidden="true"><use href="#ic-arrow"></use></svg></span>
+      </a>
+    </nav>
+
+    <div class="drawer__art" aria-hidden="true">
+      <svg viewBox="0 0 120 92" width="82"><use href="#fish-swim"></use></svg>
+      <svg viewBox="0 0 130 130" width="62" style="color:#8ed07a"><use href="#coral-fan"></use></svg>
+      <svg viewBox="0 0 90 180" width="26"><use href="#kelp"></use></svg>
+    </div>
+    <p class="drawer__foot">IDEC · Engineering the marine sulfur-cycle enzyme MddH<br>Content under continuous update · <span data-year>2026</span></p>
+  </div>
+</div>
+
+<main>
+
+<!-- ============ 页头 ============ -->
+<section class="page-head">
+  <div class="page-head__art" aria-hidden="true">
+    <svg viewBox="0 0 200 200">
+      <use href="#kelp" x="0" y="10" width="80" height="180"></use>
+      <use href="#fish-swim" x="60" y="20" width="140" height="108"></use>
+      <use href="#shell" x="120" y="140" width="70" height="70" style="--c1:#f7d472"></use>
+    </svg>
+  </div>
+  <div class="wrap page-head__inner">
+    <p class="crumb">Documentation · records</p>
+    <h1>Lab records and downloads</h1>
+    <p class="lede" style="max-width:54ch">
+      This page has two parts:<b>Lab Notebook</b> a chronological record of every computational and wet-lab step, including setbacks and fixes;
+      <b>Download</b> reports, raw data, computational code and safety documents. The records follow the project's DBTL cycle:<b>Design → Build → Test → Learn</b>。
+    </p>
+    <div class="row" style="margin-top:1.6rem">
+      <a class="btn btn--sea" href="#lab-notebook">
+        Open the Lab Notebook
+        <svg viewBox="0 0 24 24" width="18" aria-hidden="true"><use href="#ic-arrow"></use></svg>
+      </a>
+      <a class="btn btn--ghost" href="#download-report">Jump to downloads</a>
+    </div>
+  </div>
+</section>
+
+<!-- ============ Lab Notebook ============ -->
+<section class="band band--paper" id="lab-notebook">
+  <div class="tear tear--top" data-torn-self data-torn="22" data-torn-edges="top" data-torn-var="--clip" data-torn-seed="tear-doc" aria-hidden="true"></div>
+  <div class="wrap">
+    <span class="eyebrow" data-reveal>Lab Notebook</span>
+    <h2 data-reveal>Lab Notebook</h2>
+    <p class="lede wrap--narrow" style="margin-bottom:2.4rem" data-reveal>
+      Each record answers four questions: what we did, what we observed, what went wrong and what came next. Records 07–09 contain the core data of the paper and the problems they exposed.
+    </p>
+
+    <div class="timeline">
+      <article class="entry" data-reveal>
+        <div class="entry__meta"><span>Record 01</span><span>Responsible: Dry-Lab Group</span></div>
+        <h3>Project scoping and literature review</h3>
+        <ul>
+          <li>Defined the target: the SAM-dependent methyltransferase MddH of marine microbial origin, using the reference sequence from <i>Marinobacter litoralis</i> SW-45（UE2）。</li>
+          <li>Mapped the mechanism: H₂S is methylated to MeSH and then to DMS, with SAM as the methyl donor in both steps.</li>
+          <li>Explored the application outlook: DMS is a platform molecule that can be oxidized further to DMSO or used for sulfur-containing chemical synthesis.</li>
+        </ul>
+      </article>
+
+      <article class="entry" data-reveal>
+        <div class="entry__meta"><span>Record 02</span><span>Responsible: Dry-Lab Group</span></div>
+        <h3>Route A: structure prediction and molecular docking</h3>
+        <ul>
+          <li>AlphaFold3 predicted the apo homotetramer of UE2; molecular dynamics simulations identified residues of interest.</li>
+          <li>Molecular docking built the MddH–SAM–H₂S ternary complex model and mapped the substrate-binding pocket.</li>
+          <li>Working hypothesis: SAM binding in UE2 is over-stabilized (early docking ≈ −7.9 kcal/mol), so weakening cofactor binding might accelerate turnover.</li>
+          <li>Boltz-2 affinity ranking → three sites selected: E63Q, E91Q and T108I.</li>
+        </ul>
+      </article>
+
+      <article class="entry" data-reveal>
+        <div class="entry__meta"><span>Record 03</span><span>Responsible: Dry-Lab Group</span></div>
+        <h3>FoldX stability prediction</h3>
+        <ul>
+          <li>Used the FoldX plugin in YASARA-Structure to calculate ΔΔG (ΔG<sub>mutant</sub> − ΔG<sub>wild-type</sub>）。</li>
+          <li>E63Q +0.79 and E91Q +0.82 (mildly destabilizing); T108I +0.098 (nearly neutral).</li>
+          <li>Double mutant E63Q/E91Q +1.66 (approximately additive); triple mutant +1.53 (weak epistatic compensation by T108I).</li>
+        </ul>
+      </article>
+
+      <article class="entry" data-reveal>
+        <div class="entry__meta"><span>Record 04</span><span>Responsible: Wet-Lab Group</span></div>
+        <h3>Variant construction and sequencing validation</h3>
+        <ul>
+          <li>Five variants (E63Q, E91Q, T108I, E63Q/E91Q and E63Q/E91Q/T108I) were synthesized by Sangon Biotech (Shanghai).</li>
+          <li>Transformed into <i>E. coli</i> BL21(DE3); single colonies were sequenced to confirm that the mutations had been introduced correctly.</li>
+          <li>Issue: one batch of PCR products gave weak bands; after adjusting the annealing temperature and extension time and purifying the DNA, normal bands returned.</li>
+        </ul>
+      </article>
+
+      <article class="entry" data-reveal>
+        <div class="entry__meta"><span>Record 05</span><span>Responsible: Wet-Lab Group</span></div>
+        <h3>Expression and crude-lysate preparation</h3>
+        <ul>
+          <li>Seed culture was inoculated into fresh LB, grown at 37 °C for 2.5 h, then held at 4 °C for 0.5 h.</li>
+          <li>Induction with IPTG at a final concentration of 0.1 mM, 16 °C for 18 h.</li>
+          <li>Cells were harvested at 4 °C, 8000 rpm, resuspended in PBS and sonicated on ice (5 s on / 10 s off, 1 min per cycle, up to 3 cycles); the supernatant after centrifugation was used as the crude lysate.</li>
+        </ul>
+      </article>
+
+      <article class="entry" data-reveal>
+        <div class="entry__meta"><span>Record 06</span><span>Responsible: Wet-Lab Group</span></div>
+        <h3>Setting up the HS-GC assay</h3>
+        <ul>
+          <li>200 μL reaction: crude lysate + SAM (1 mM) + MeSH (1 mM), incubated at 28 °C for 3 h.</li>
+          <li>The supernatant was transferred into a sealed headspace vial and analysed on an Agilent 8860B GC (N₂ carrier gas), integrating the DMS and MeSH peak areas.</li>
+          <li>Calibration curve: √peak area = 3.1854C − 25.261, used to convert peak areas into absolute yields (nmol).</li>
+        </ul>
+      </article>
+
+      <article class="entry" data-reveal>
+        <div class="entry__meta"><span>Record 07</span><span>Responsible: Wet-Lab Group</span></div>
+        <h3>Round-one activity results (crude lysates)</h3>
+        <ul>
+          <li>Wild-type UE-2: 336.4 ± 2.6 nmol (100%, CV 0.8%).</li>
+          <li>E91Q：353.5 ± 7.3 nmol（105.1%，P = 0.0045）；T108I：344.7 ± 7.9 nmol（102.5%，P = 0.199，ns）。</li>
+          <li>E63Q: 16.4 ± 0.4 nmol (4.9%); E63Q/E91Q: 10.1 ± 2.7 nmol (3.0%); triple mutant: 29.2 ± 3.8 nmol (8.7%); all three P &lt; 0.0001.</li>
+          <li>One-way ANOVA: F(5,12) = 3979.5, P &lt; 0.0001.</li>
+        </ul>
+      </article>
+
+      <article class="entry" data-reveal>
+        <div class="entry__meta"><span>Record 08</span><span>Responsible: Wet-Lab / Dry-Lab Group</span></div>
+        <h3>Mechanistic clues from the product profile</h3>
+        <ul>
+          <li>No DMS peak was detectable for E63Q and its combinatorial variants, whereas MeSH output was comparable to wild type → suggesting that the second step (MeSH → DMS) may be impaired.</li>
+          <li>Note: the no-enzyme control in this batch also gave high MeSH peaks (1.24–1.77×10⁷), indicating considerable background interference.</li>
+          <li>Quantitative confirmation requires stricter controls (heat-inactivated enzyme, SAM omission), so this is currently only a mechanistic clue.</li>
+        </ul>
+      </article>
+
+      <article class="entry" data-reveal>
+        <div class="entry__meta"><span>Record 09</span><span>Responsible: Wet-Lab Group</span></div>
+        <h3>Reproducibility problems in the whole-cell batch</h3>
+        <ul>
+          <li>Within the same whole-cell batch, the three wild-type replicates differed almost 20-fold in DMS peak area (CV 90.6%) and one value looked like a recording or transcription error.</li>
+          <li>Assessment: the current whole-cell system still lacks adequate control of cell density, induction level and headspace sampling consistency.</li>
+          <li>Action: quantitative conclusions rest on the crude-lysate data and whole-cell data are used qualitatively only; next we switch to standardized initial-rate kinetics.</li>
+        </ul>
+      </article>
+
+      <article class="entry" data-reveal>
+        <div class="entry__meta"><span>Record 10</span><span>Responsible: Dry-Lab Group</span></div>
+        <h3>Route B: upgrading to a multidimensional consensus strategy</h3>
+        <ul>
+          <li>Abandoned the single affinity metric in favour of three zero-shot predictors (ProtSSN, ProSST, TranceptEVE) plus the PLACER ligand-conformational gate.</li>
+          <li>Added a ThermoMPNN stability red line (ΔΔG &gt; +1 kcal/mol rejected outright) and sequence sanity checks (to avoid numbering errors).</li>
+          <li>Saturation scanning of 45 residues within 8 Å of the round-one hits generated 855 single-point candidates (not yet built as a physical library).</li>
+          <li>Consensus ranking produced the next-generation priority list: I46L, E91Q, S65T, S44T, V40I, plus E91A/D/N for mechanistic studies.</li>
+        </ul>
+      </article>
+
+      <article class="entry" data-reveal>
+        <div class="entry__meta"><span>Record 11</span><span>Responsible: whole team</span></div>
+        <h3>Review and next-stage planning</h3>
+        <ul>
+          <li>Conclusions: E91Q raised DMS production significantly (~5%); T108I essentially maintained wild-type activity; E63 is indispensable for catalysis; stacking substitutions gave no clear gain.</li>
+          <li>Next 1: build and validate the Route B next-generation variants, all read out by standardized initial-rate kinetics.</li>
+          <li>Next 2: feed the kinetic data back into the active-learning module, which nominates the next 16–32 variants, closing the DBTL loop.</li>
+          <li>Next 3: co-express with the monooxygenase Tmm to explore the H₂S → MeSH → DMS → DMSO cascade and assess waste-sulfur valorization performance.</li>
+        </ul>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ============ Download ============ -->
+<section class="band band--mist" id="download-report">
+  <div class="tear tear--top" data-torn-self data-torn="22" data-torn-edges="top" data-torn-var="--clip" data-torn-seed="tear-download" aria-hidden="true"></div>
+  <div class="wrap">
+    <span class="eyebrow" data-reveal>Download</span>
+    <h2 data-reveal>Download reports and materials</h2>
+    <p class="lede wrap--narrow" style="margin-bottom:2rem" data-reveal>
+      All files live in <b>assets/files/</b> with filenames matching the paths below — the buttons download them directly. If a click does nothing, your browser is blocking local downloads: open the file straight from the <b>assets/files/</b> folder instead.
+    </p>
+
+    <div class="files">
+      <article class="filecard" data-reveal data-torn="12" data-torn-var="--clip" data-torn-seed="file-idec-report.pdf">
+        <div class="filecard__top">
+          <span class="filecard__icon" style="background:#0d5f6b" aria-hidden="true">PDF</span>
+          <h3>Project report</h3>
+        </div>
+        <p>The complete background, design, results and discussion — suitable as the main review document.</p>
+        <span class="filecard__path">assets/files/idec-report.pdf</span>
+        <a class="btn btn--ghost" href="assets/files/idec-report.pdf" data-file="assets/files/idec-report.pdf" download>
+          <svg viewBox="0 0 24 24" width="17" aria-hidden="true"><use href="#ic-download"></use></svg>
+          Download
+        </a>
+      </article>
+
+      <article class="filecard" data-reveal data-torn="12" data-torn-var="--clip" data-torn-seed="file-idec-data.xlsx">
+        <div class="filecard__top">
+          <span class="filecard__icon" style="background:#2f6b4f" aria-hidden="true">XLSX</span>
+          <h3>HS-GC raw data table</h3>
+        </div>
+        <p>Variant names, DMS and MeSH peak areas, and converted yields (nmol).</p>
+        <span class="filecard__path">assets/files/idec-data.xlsx</span>
+        <a class="btn btn--ghost" href="assets/files/idec-data.xlsx" data-file="assets/files/idec-data.xlsx" download>
+          <svg viewBox="0 0 24 24" width="17" aria-hidden="true"><use href="#ic-download"></use></svg>
+          Download
+        </a>
+      </article>
+
+      <article class="filecard" data-reveal data-torn="12" data-torn-var="--clip" data-torn-seed="file-idec-model.zip">
+        <div class="filecard__top">
+          <span class="filecard__icon" style="background:#3b5a8f" aria-hidden="true">ZIP</span>
+          <h3>Computational code and candidate rankings</h3>
+        </div>
+        <p>Route A/B prediction pipelines, consensus scores and candidate lists (to be released on GitHub).</p>
+        <span class="filecard__path">assets/files/idec-model.zip</span>
+        <a class="btn btn--ghost" href="assets/files/idec-model.zip" data-file="assets/files/idec-model.zip" download>
+          <svg viewBox="0 0 24 24" width="17" aria-hidden="true"><use href="#ic-download"></use></svg>
+          Download
+        </a>
+      </article>
+
+      <article class="filecard" data-reveal data-torn="12" data-torn-var="--clip" data-torn-seed="file-idec-protocol.pdf">
+        <div class="filecard__top">
+          <span class="filecard__icon" style="background:#b8891b" aria-hidden="true">PDF</span>
+          <h3>Laboratory protocol</h3>
+        </div>
+        <p>Full parameters from template preparation, PCR and gel electrophoresis through expression, lysis and HS-GC.</p>
+        <span class="filecard__path">assets/files/idec-protocol.pdf</span>
+        <a class="btn btn--ghost" href="assets/files/idec-protocol.pdf" data-file="assets/files/idec-protocol.pdf" download>
+          <svg viewBox="0 0 24 24" width="17" aria-hidden="true"><use href="#ic-download"></use></svg>
+          Download
+        </a>
+      </article>
+
+      
+
+      <article class="filecard" data-reveal data-torn="12" data-torn-var="--clip" data-torn-seed="file-idec-safety.pdf">
+        <div class="filecard__top">
+          <span class="filecard__icon" style="background:#0d5f6b" aria-hidden="true">PDF</span>
+          <h3>Safety and ethics forms</h3>
+        </div>
+        <p>H₂S / methanethiol risk control, plus strain and waste-handling records.</p>
+        <span class="filecard__path">assets/files/idec-safety.pdf</span>
+        <a class="btn btn--ghost" href="assets/files/idec-safety.pdf" data-file="assets/files/idec-safety.pdf" download>
+          <svg viewBox="0 0 24 24" width="17" aria-hidden="true"><use href="#ic-download"></use></svg>
+          Download
+        </a>
+      </article>
+
+      
+    </div>
+
+    <div class="note" style="margin-top:2.4rem" data-reveal>
+      <svg viewBox="0 0 24 24" aria-hidden="true"><use href="#ic-info"></use></svg>
+      <div>
+        <b>Data availability</b>
+        Wet-lab raw data are stored in <code>Wet-lab HS-GC data.xlsx</code>(variant names, DMS/MeSH peak areas and yields);The computational code and data are currently available for download via this Wiki, and will be subsequently released on GitHub. 
+      </div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<!-- ============ 黑色页脚 ============ -->
+<footer class="site-footer" id="contact">
+  <div class="tear tear--hang" style="--band:#e6f4f2" data-torn-self data-torn="22" data-torn-edges="bottom" data-torn-var="--clip" data-torn-seed="tear-footer" aria-hidden="true"></div>
+  <div class="wrap">
+    <div class="site-footer__grid">
+      <div class="footer-brand">
+        <svg viewBox="0 0 100 100" aria-hidden="true"><use href="#mark"></use></svg>
+        <div>
+          <h4 style="margin-bottom:.4rem">IDEC</h4>
+          <p class="footer-note">
+            Semi-rational engineering of the marine sulfur-cycle enzyme MddH<br>
+            Turning waste-gas sulfur into a usable platform molecule.
+          </p>
+        </div>
+      </div>
+      <div>
+        <h4>Contact</h4>
+        <div class="footer-list">
+          <span class="contact-line" data-copy="idec-team@example.com">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><use href="#ic-mail"></use></svg>
+            idec-team@example.com 
+          </span>
+          <span class="contact-line" data-copy="+86 532-82032721">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><use href="#ic-phone"></use></svg>
+            +86 532-82032721 
+          </span>
+          <span class="contact-line">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><use href="#ic-clock"></use></svg>
+            Monday–Friday, 09:00–18:00
+          </span>
+        </div>
+      </div>
+      <div>
+        <h4>Location</h4>
+        <div class="footer-list">
+          <span class="contact-line">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><use href="#ic-pin"></use></svg>
+            Laboratory:Room 305, Chemistry Building, Yushan Campus, Ocean University of China
+          </span>
+          <span class="contact-line">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><use href="#ic-pin"></use></svg>
+            Affiliation: Ocean University of China · College of Marine Life Sciences
+          </span>
+          <span class="contact-line">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><use href="#ic-pin"></use></svg>
+            City: Qingdao, China
+          </span>
+        </div>
+      </div>
+      <div>
+        <h4>Site map</h4>
+        <div class="footer-list">
+          <a href="index.html">Home · overview</a>
+          <a href="team.html">Team · photo wall</a>
+          <a href="project.html">Project · full write-up</a>
+          <a href="documentation.html">Documentation · records</a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© <span data-year>2026</span> IDEC Team · content licensed under CC BY-SA 4.0</span>
+      <span>Lab Notebook · Download Report</span>
+    </div>
+  </div>
+</footer>
+
+<button class="to-top" type="button" aria-label="Back to top">
+  <svg viewBox="0 0 24 24" width="22" aria-hidden="true"><use href="#ic-up"></use></svg>
+</button>
+
+<script src="assets/js/main.js"></script>
+</body>
+</html>

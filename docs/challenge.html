@@ -1,0 +1,826 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>iDEC 2026 Challenge · OUC-DE — Engineering Control of pRK24 Conjugation Efficiency</title>
+<style>
+  :root{
+    --ink:#12262f; --teal:#0d5f6b; --teal2:#13a189; --teal3:#0a6f6a;
+    --sand:#f7f1e2; --paper:#fffdf6; --mist:#e6f4f2; --coral:#e2664a; --gold:#f7d472;
+    --muted:rgba(18,38,47,.66); --line:rgba(18,38,47,.14);
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html{scroll-behavior:smooth;}
+  body{font-family:-apple-system,"PingFang SC","Microsoft YaHei","Segoe UI",Roboto,sans-serif;
+       background:var(--sand); color:var(--ink); line-height:1.7; font-size:15px;}
+  .wrap{max-width:1120px; margin:0 auto; padding:0 22px;}
+
+  /* 顶部条 */
+  header.site-top{background:var(--ink); color:#eaf3f1; padding:14px 0; position:sticky; top:0; z-index:50;}
+  .site-top .wrap{display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap;}
+  .site-top .brand{display:flex; align-items:center; gap:10px;}
+  .site-top .brand .mark{width:34px; height:34px; border-radius:50%;
+       background:linear-gradient(135deg,var(--teal2),var(--teal3)); display:grid; place-items:center;
+       color:#fff; font-weight:800; font-size:14px;}
+  .site-top .brand b{font-size:15px; letter-spacing:.4px;}
+  .site-top .brand small{display:block; color:#9fc3c9; font-size:11px; letter-spacing:.5px;}
+  .site-top nav{display:flex; gap:6px; flex-wrap:wrap;}
+  .site-top nav a{color:#dbece9; text-decoration:none; font-size:12.5px; padding:6px 10px; border-radius:999px;
+       border:1px solid rgba(255,255,255,.18); transition:.2s;}
+  .site-top nav a:hover{background:rgba(255,255,255,.12); color:#fff;}
+
+  /* HERO */
+  .hero{background:
+       radial-gradient(1200px 500px at 85% -10%, rgba(19,161,137,.28), transparent 60%),
+       radial-gradient(900px 420px at -10% 20%, rgba(13,95,107,.32), transparent 55%),
+       linear-gradient(160deg, #0d3540 0%, var(--teal) 52%, #0a5f63 100%);
+       color:#eef6f4; padding:64px 0 58px; position:relative; overflow:hidden;}
+  .hero::after{content:""; position:absolute; left:0; right:0; bottom:0; height:26px;
+       background:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 26' preserveAspectRatio='none'><path d='M0 26 L0 14 Q150 0 300 12 T600 13 T900 12 T1200 14 L1200 26 Z' fill='%23f7f1e2'/></svg>")
+       no-repeat center/cover;}
+  .hero .badge{display:inline-flex; align-items:center; gap:8px; border:1px solid rgba(255,255,255,.35);
+       border-radius:999px; padding:5px 14px; font-size:12.5px; letter-spacing:.6px; background:rgba(255,255,255,.08);}
+  .hero h1{font-size:clamp(26px,4.6vw,42px); line-height:1.25; margin:18px 0 14px; font-weight:800;}
+  .hero h1 em{font-style:normal; color:#ffd98a;}
+  .hero .sub{max-width:820px; color:#cfe4e1; font-size:15px;}
+  .hero .sub b{color:#fff;}
+  .hero .chips{display:flex; gap:10px; flex-wrap:wrap; margin-top:22px;}
+  .hero .chip{background:rgba(255,255,255,.10); border:1px solid rgba(255,255,255,.22);
+       border-radius:12px; padding:8px 14px; font-size:12.5px;}
+  .hero .chip b{display:block; color:#ffd98a; font-size:11px; letter-spacing:.8px; margin-bottom:1px;}
+  .hero .stats{display:flex; gap:14px; flex-wrap:wrap; margin-top:26px;}
+  .hero .stat{background:rgba(10,42,50,.45); border:1px solid rgba(255,255,255,.16); border-radius:14px;
+       padding:12px 18px; min-width:120px;}
+  .hero .stat b{font-size:24px; color:#8fe3c6; display:block; line-height:1.2;}
+  .hero .stat span{font-size:12px; color:#cfe4e1;}
+
+  /* 通用 section */
+  section.block{padding:58px 0 8px;}
+  .eyebrow{display:inline-block; font-size:12px; letter-spacing:2px; color:var(--teal2); font-weight:700; margin-bottom:8px;}
+  h2.sec{font-size:clamp(21px,3.2vw,28px); font-weight:800; margin-bottom:8px;}
+  .lede{color:var(--muted); max-width:860px; margin-bottom:26px;}
+  .band{background:var(--paper); border-radius:20px; padding:26px 26px 22px; margin:20px 0;
+        border:1px solid var(--line); box-shadow:0 2px 14px rgba(18,38,47,.05);}
+  .band--mist{background:var(--mist);}
+  .band--sand{background:var(--sand); border-color:rgba(18,38,47,.10);}
+  h3.sub{font-size:17px; font-weight:800; margin:4px 0 12px;}
+  h3.sub::before{content:"▍"; color:var(--teal2); margin-right:6px;}
+  p+p{margin-top:.7em;}
+  .muted{color:var(--muted); font-size:13.5px;}
+  .tag{display:inline-block; background:var(--mist); color:var(--teal); font-size:12px; border-radius:999px;
+       padding:3px 12px; margin:2px 4px 2px 0; border:1px solid rgba(13,95,107,.2);}
+  .tag--warn{background:#fdeee9; color:#a8442c; border-color:rgba(226,102,74,.35);}
+  .tag--gold{background:#fbf1d8; color:#8a6d1d; border-color:rgba(247,212,114,.6);}
+
+  .grid{display:flex; gap:16px; flex-wrap:wrap;}
+  .grid>*{flex:1 1 280px; min-width:0;}
+  .card{background:#fff; border:1px solid var(--line); border-radius:16px; padding:18px 20px;}
+  .card h4{font-size:15px; font-weight:800; margin-bottom:8px; color:var(--teal);}
+  .card ul{list-style:none; padding:0;}
+  .card ul li{padding-left:16px; position:relative; font-size:13.5px; margin:5px 0;}
+  .card ul li::before{content:"›"; position:absolute; left:0; color:var(--teal2); font-weight:800;}
+
+  table.tb{width:100%; border-collapse:collapse; font-size:13px; margin:12px 0; background:#fff;
+       border:1px solid var(--line); border-radius:12px; overflow:hidden;}
+  table.tb th{background:var(--teal); color:#fff; font-weight:700; padding:9px 10px; text-align:left; font-size:12.5px;}
+  table.tb td{padding:8px 10px; border-top:1px solid var(--line); vertical-align:top;}
+  table.tb tr:nth-child(even) td{background:rgba(230,244,242,.4);}
+  table.tb .tbd{color:#b08a4a; font-style:italic;}
+
+  .formula{background:var(--mist); border:1px solid rgba(13,95,107,.22); border-radius:12px;
+       padding:12px 16px; font-size:14px; font-family:"Cambria Math",Georgia,serif; margin:10px 0; overflow-x:auto;}
+  .formula var{color:var(--teal); font-weight:700;}
+  .note{display:flex; gap:10px; background:var(--sand); border:1px dashed rgba(18,38,47,.25);
+       border-radius:12px; padding:12px 16px; font-size:13px; margin:14px 0;}
+  .note b{color:var(--teal);}
+
+  .num{display:inline-grid; place-items:center; width:26px; height:26px; border-radius:50%;
+       background:var(--teal2); color:#fff; font-weight:800; font-size:13px; margin-right:8px; vertical-align:middle;}
+
+  svg.diag{width:100%; height:auto; display:block; border:1px solid var(--line);
+       background:#fffdf8; border-radius:14px;}
+  .cap{font-size:12px; color:var(--muted); margin-top:6px;}
+  .cap b{color:var(--teal);}
+
+  /* 图占位 */
+  .figgrid{display:flex; gap:18px; flex-wrap:wrap; margin-top:12px;}
+  .fig{flex:1 1 300px; min-width:0; background:#fff; border:1px solid var(--line); border-radius:14px; padding:14px;}
+  .fig h5{font-size:13.5px; font-weight:800; margin-bottom:2px;}
+  .fig .req{font-size:12px; color:var(--muted); margin-bottom:10px;}
+  .ph{position:relative; border:1px dashed rgba(18,38,47,.3); border-radius:10px; background:#fbfaf5;}
+  .ph .water{position:absolute; inset:0; display:grid; place-items:center; font-size:13px; color:rgba(18,38,47,.35);
+       font-weight:700; letter-spacing:2px; pointer-events:none;}
+
+  footer.site-footer{background:var(--ink); color:#cfe0dd; margin-top:64px; padding:34px 0 26px; font-size:13px;}
+  footer a{color:#8fe3c6;}
+  .foot-grid{display:flex; gap:26px; flex-wrap:wrap;}
+  .foot-grid>div{flex:1 1 220px; min-width:0;}
+  footer h4{color:#fff; font-size:14px; margin-bottom:8px;}
+  footer .foot-list span, footer .foot-list a{display:block; margin:4px 0; color:#9fc3c9; text-decoration:none;}
+  .footer-bottom{margin-top:22px; padding-top:14px; border-top:1px solid rgba(255,255,255,.14);
+       display:flex; justify-content:space-between; flex-wrap:wrap; gap:8px; color:#8aa9ae;}
+  /* ===== 新增：图片占位框（大小都在这里调） ===== */
+  /* 横版大图：改 aspect-ratio 调长宽比（16/9 最扁、4/3 最方） */
+  .ph--photo{aspect-ratio:4/3; margin-top:16px;}
+  /* 五个正方形：改 max-width 调单个尺寸上限，改 flex 里的 130px 调最小宽度 */
+  .sqrow{display:flex; gap:12px; flex-wrap:wrap; margin-top:12px;}
+  .sq{flex:1 1 130px; max-width:170px; min-width:0;}
+  .ph--sq{aspect-ratio:1/1;}
+  /* 插入的图片：等比完整显示，不裁切、不拉伸 */
+  .ph img{position:absolute; inset:0; width:100%; height:100%; object-fit:contain;
+          background:#fff; border-radius:10px;}
+  .ph--photo img{object-fit:cover;}
+  .sq .cap{font-size:11.5px; text-align:center; margin-top:6px;}
+
+  @media (max-width:640px){
+    body{font-size:14px;}
+    section.block{padding:44px 0 4px;}
+    .band{padding:18px 16px;}
+    table.tb{font-size:12px;}
+    .hero{padding:46px 0 44px;}
+  }
+</style>
+</head>
+<body>
+
+<header class="site-top">
+  <div class="wrap">
+    <div class="brand">
+      <img src="assets/img/logo-2.png" alt="Ocean University of China logo"
+           style="height:34px; width:auto; display:block" onerror="this.remove()">
+      <span class="mark">DE</span>
+      <span><b>IDEC WIKI · OUC-DE</b><small>2026 Challenge · pRK24 Conjugation Control</small></span>
+    </div>
+    <nav>
+      <a href="#overview">01 Challenge</a>
+      <a href="#bg">02 Background</a>
+      <a href="#design">03 Design</a>
+      <a href="#protocol">04 protocol</a>
+      <a href="#controls">05 Controls</a>
+      <a href="#figures">06 Figures</a>
+      <a href="#scoring">07 Scoring</a>
+      <a href="#records">08 Records</a>
+      <a href="#refs">09 References</a>
+    </nav>
+    <button class="wknav-burger" type="button" aria-label="Open navigation menu" aria-expanded="false" aria-controls="wknav">
+      <span class="wknav-lines" aria-hidden="true"><i></i><i></i><i></i></span>
+    </button>
+  </div>
+</header>
+
+
+<!-- ================= HERO ================= -->
+<section class="hero">
+  <div class="wrap">
+    <span class="badge">iDEC · 2026 Challenge · Engineering Control of pRK24 Conjugation Efficiency</span>
+    <h1>Install an inducible <em>"switch"</em> for pRK24 conjugation</h1>
+    <p class="sub">
+      OUC-DE participates in this brand-new challenge in 2026.
+      The iDEC 2026 Challenge requires teams to engineer an <b>L-arabinose (pBAD)-inducible regulatory system</b>
+      to precisely control the conjugation efficiency of the broad-host-range conjugative plasmid <b>pRK24</b>:
+      <b>Upon full induction, conjugation efficiency should approach the high conjugation level of wild-type pRK24</b>;
+      <b>under non-inducing conditions, conjugation efficiency should be close to zero</b>.
+      Taking <b>KorA, KorB, TrbA</b> from the native regulatory network of RK2 (the parental plasmid of pRK24) as candidate regulators,
+      OUC-DE adopts an RNA-based regulatory strategy. Our goal is to achieve maximum dynamic range and predictable dose response across a 6-point L-arabinose gradient.
+    </p>
+    <div class="chips">
+      <span class="chip"><b>Regulators</b>KorA · KorB · TrbA Antisense RNA</span>
+      <span class="chip"><b>Input</b>L-arabinose → pBAD → pAJM.677</span>
+      <span class="chip"><b>Host</b>Top 10/DH10B（Donor + Recipient）</span>
+      <span class="chip"><b>Goal</b>Maximize dynamic range + Robust and predictable performance</span>
+    </div>
+  </div>
+</section>
+
+<main class="wrap">
+
+<!-- ================= 01 挑战赛概览 ================= -->
+<section class="block" id="overview">
+  <span class="eyebrow">01 · Challenge Overview</span>
+  <h2 class="sec">Challenge Overview: Tunable "Throttle" for Conjugation</h2>
+  <p class="lede">
+    This challenge runs independently from the main project track. We inserted antisense RNA regulators targeting KorA, KorB and TrbA into the pBAD expression cassette
+    of <b>pAJM.677</b> to regulate conjugative transfer of pRK24.
+  </p>
+
+  <div class="grid">
+    <div class="card">
+      <h4>Design Goals</h4>
+      <ul>
+        <li><b>ON state</b>: High conjugation efficiency under full induction (1000 μM L-arabinose), ideally approaching the wild-type pRK24 control;</li>
+        <li><b>OFF state</b>: Extremely low conjugation efficiency under non-inducing conditions (0 μM), ideally close to zero;</li>
+        <li>Sole input signal: L-arabinose → pBAD → expression of KorA/KorB/TrbA in pAJM.677.</li>
+      </ul>
+    </div>
+    
+  </div>
+
+  
+</section>
+
+<!-- ================= 02 科学背景 ================= -->
+<section class="block" id="bg">
+  <span class="eyebrow">02 · Scientific Background</span>
+  <h2 class="sec">Scientific Background: CAGE, pRK24 and the RK2 Regulatory Network</h2>
+
+  <div class="band">
+    <h3 class="sub">CAGE: Why pRK24?</h3>
+    <p>
+      <b>Conjugative Assembly Genome Engineering (CAGE)</b>
+      (Ma, Moonan & Isaacs, <i>Nature Protocols</i>, 2014) uses bacterial conjugation for hierarchical assembly of E. coli genomes:
+      <b>oriT</b> is site-specifically integrated into the donor genome (fused with a kanamycin resistance cassette, placed ≥ 3 kb upstream of the target fragment),
+      with transfer functions supplied by a separate conjugative machinery plasmid. The transferred single-stranded donor DNA enters the recipient and is converted to double-stranded DNA,
+      followed by recombination mediated by recBCD to form a chimeric genome. One round of CAGE takes roughly one week; four rounds complete hierarchical assembly of 16 strains (around one month).
+    </p>
+    <p>
+      This conjugative machinery is <b>pRK24</b> (Addgene strain #51950), an <b>IncP broad-host-range conjugative plasmid</b>
+      (a derivative of the RK2 / RP4 / RP1 family, lacking kanamycin resistance). pRK24 is readily lost from most cells in the absence of antibiotic selection pressure.
+      For this reason, CAGE relies on a “selection–loss–reintroduction” cycle to rapidly switch between donor and recipient states.
+      <b>pRK24 naturally exhibits extremely high conjugation efficiency</b>, and nearly half of its genome consists of transfer-related genes.
+      This is exactly why it was selected as our regulatory target for this challenge: if we can engineer control over the “conjugation initiation rate”,
+      we can add an inducible, programmable switch for conjugation-dependent technologies such as CAGE.
+    </p>
+    <p class="muted">
+      Sources: Original CAGE paper (Nat Protoc. 2014;9(10):2285–2300) and the official iDEC 2026 Challenge Guide.
+    </p>
+  </div>
+
+  <div class="band band--mist">
+    <h3 class="sub">RK2 Global Regulatory Network: KorA · KorB · TrbA</h3>
+    <p>
+      RK2 possesses a complex negative regulatory network centered on three global transcriptional repressors <b>KorA, KorB, TrbA</b>.
+      They cooperatively coordinate gene expression for replication (<i>TrbA</i> operon), stable maintenance and conjugative transfer (<i>trb</i> operon, among others).
+      KorB can form <b>pairwise cooperativity</b> with either KorA or TrbA, producing repression on the same promoter far stronger than the product of repression exerted by each protein individually.
+      The network exhibits ultrasensitive behaviour: minor regulatory perturbations can alter conjugation frequency by multiple orders of magnitude. This property forms the scientific foundation for our wide‑dynamic‑range “switch” design.
+    </p>
+    <!-- Landscape figure: drop the image at assets/img/challenge/rk2-network.png -->
+    <div class="ph ph--photo">
+      <img src="assets/img/challenge/rk2-network.png" alt="KorA / KorB / TrbA regulatory network schematic" onload="this.nextElementSibling.style.display='none'" onerror="this.remove()">
+      <span class="water">Image slot · assets/img/challenge/rk2-network.png</span>
+    </div>
+    <p class="cap"><b>Figure 2-1.</b> Cooperative regulation of RK2 replication and conjugative transfer by KorA · KorB · TrbA(schematic from the paper, to be inserted).</p>
+    
+  </div>
+
+  <div class="grid">
+    <div class="card">
+      <h4>① Direct KorA–KorB Interaction (Heterodimer) · Mol Microbiol 2008</h4>
+      <ul>
+        <li>NMR demonstrates that KorA and KorB bind directly in the absence of DNA; the interaction interface is located within the C-terminal domain (CTD) of KorA;</li>
+        <li>Each KorB dimer can interact with two KorA dimers (2 KorA : 1 KorB);</li>
+        <li>Key residue: <b>KorA Tyr84</b> (substitutable by Phe) — its deletion leaves standalone repression unchanged but completely abolishes cooperativity with KorB;</li>
+        <li>korAp: KorA alone yields ~3-fold repression; addition of KorB produces &gt;100-fold repression.</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h4>② Cooperative Repression of trbBp by KorB–TrbA · J Bacteriol 2001</h4>
+      <ul>
+        <li>trbBp is the major promoter of the trb operon encoding Mpf mating-pair formation genes. KorB and TrbA still cooperate when their binding sites are ~165 bp apart;</li>
+        <li>TrbA alone: 2.3× repression; KorB alone: 8.3× repression; together <b>&gt;203.5×</b> repression, cooperativity index CI ≈ 10.7 (CI &gt; 20 at mRNA level);</li>
+        <li>KorB site OB9 lies 189 bp upstream of trbBp; distal binding enables strong repression (DNA looping model);</li>
+        <li>The CTD of TrbA (highly conserved with KorA CTD) is required for cooperativity.</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h4>③ TrbA Cross-Regulates Replication and Transfer · Nucleic Acids Res 1992</h4>
+      <ul>
+        <li>trbA encodes a 12 kDa protein (121 aa), located upstream of the trb operon;</li>
+        <li>TrbA represses both <b>TrbAp</b> (vegetative replication) and <b>kilBI/trbBp</b> (conjugative transfer), coordinating two propagation modes: “replication” and “transfer”;</li>
+        <li>Its N-terminal HTH motif resembles the Sin/φ105 immunity repressor of *Bacillus subtilis*; the CTD is similar to KorA (rich in basic amino acids).</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h4>④ Ultrasensitive Response: Minor Changes → Orders‑of‑Magnitude Effects · Mol Microbiol 2003</h4>
+      <ul>
+        <li>The TrbA operator (<b>CGGTATATCG</b>) at trbBp is naturally <b>submaximal</b>; a G→A transition at position −15 converts it into a perfect palindrome <b>CGATATATCG</b>, enhancing TrbA‑mediated repression by approximately 41–50%;</li>
+        <li>When this single‑base substitution was introduced into the full‑length RK2 genome, <b>conjugative transfer frequency dropped by 50–600‑fold</b> (mating within &lt;1 h), and TrbB protein abundance decreased roughly 14‑fold — an effect far greater than that exerted by TrbA alone;</li>
+        <li>The effect is amplified in the presence of KorB (co‑operativity index shifts from 11 to 32), demonstrating that KorB‑dependent co‑operativity magnifies “small perturbations” into “large phenotypic changes”;</li>
+        <li>Conclusion: The RK2 regulatory network hovers at a critical threshold just sufficient for efficient conjugation — a natural lever enabling switch‑like designs with wide dynamic range.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ================= 03 设计 ================= -->
+<section class="block" id="design">
+  <span class="eyebrow">03 · Project Design</span>
+  <h2 class="sec">Design: Candidate Regulators, Plasmid Systems and Strain Workflow</h2>
+
+  <div class="band">
+    <h3 class="sub">Design Hypothesis & Rationale</h3>
+    <p>
+      Our team hypothesizes: <b>The native conjugation efficiency of pRK24 is governed by KorA / KorB / TrbA</b>.
+      Inducible expression of these regulators (or their combinations) via pBAD enables systematic perturbation of <i>trb</i> operon expression across an arabinose gradient, yielding a predictable dose‑response of conjugation efficiency.
+      Candidate designs will be benchmarked against one another using the challenge scoring metrics
+      (R<sub>ON</sub>, L<sub>OFF</sub>, F, Q<sub>robust</sub>, S).
+    </p>
+    <p class="muted">
+      Design rationale: Expression of protein repressors (e.g. TrbA/KorB/KorA) increases under pBAD induction → transfer genes become more strongly repressed.
+      To achieve the desired challenge polarity (induction → higher conjugation), we adopt RNA‑based antisense regulation as our derepression strategy.
+    </p>      
+  </div>
+
+  <div class="band band--mist">
+    <h3 class="sub">Candidate Regulator Matrix (from literature mining)</h3>
+    <table class="tb">
+      <tr><th>Candidate</th><th>Regulatory Mechanism</th><th>Literature Support (Key Data)</th><th>Predicted Effect on CE</th><th>Status</th></tr>
+      <tr>
+        <td><b>TrbA</b>（protein）</td>
+        <td>Represses trbBp / TrbAp / tra promoters</td>
+        <td>NAR 1992; 2.3× repression of trbBp alone</td>
+        <td>Induction → ↓trb expression → ↓CE (baseline-sensitive)</td>
+        <td class="tbd">Constructed</td>
+      </tr>
+      <tr>
+        <td><b>KorB</b>（protein）</td>
+        <td>12 OB sites; distal repression of trbBp (OB9)</td>
+        <td>JB 2001; 8.3× repression when acting alone</td>
+        <td>Induction → ↓CE (strongest among single regulators)</td>
+        <td class="tbd">Constructed</td>
+      </tr>
+      <tr>
+        <td><b>KorA</b> (Protein)</td>
+        <td>Represses korAp / TrbAp; cooperates with KorB</td>
+        <td>MM 2008; ~3× alone, &gt;100× when combined with KorB</td>
+        <td>Induction → ↓CE; cooperative amplification effect</td>
+        <td class="tbd">Constructed</td>
+      </tr>
+    </table>
+  </div>
+
+  <div class="band">
+    <h3 class="sub">Plasmid Systems & Engineering Specifications</h3>
+    <div class="grid">
+      <div class="card">
+        <h4>Three variants of pAJM.677</h4>
+        <ul>
+          <li><b>Wild-type pAJM.677</b>: carries YFP expression cassette, serving as arabinose-inducible fluorescence control (to measure pBAD output);</li>
+          <li><b>Kanamycin-resistant engineered pAJM.677–KorA/KorB/TrbA</b>: donor-side regulatory plasmid; YFP coding region replaced with antisense RNA (KorA/KorB/TrbA);</li>
+          <li><b>Chloramphenicol-resistant pAJM.677 derivative</b>: kan resistance gene replaced by chl resistance gene, used for recipient cells and post-conjugation screening.</li>
+        </ul>
+        <h4>Wild-type pRK24</h4>
+      </div>
+     
+    </div>
+        <div class="sqrow">
+          <div class="sq">
+            <div class="ph ph--sq">
+              <img src="assets/img/challenge/pajm677-01-wildtype.png" alt="pAJM.677 wild type (YFP)" onload="this.nextElementSibling.style.display='none'" onerror="this.remove()">
+              <span class="water">+</span>
+            </div>
+            <div class="cap">pAJM.677 wild type (YFP)</div>
+          </div>
+          <div class="sq">
+            <div class="ph ph--sq">
+              <img src="assets/img/challenge/pajm677-02-kora.png" alt="pAJM.677–KorA" onload="this.nextElementSibling.style.display='none'" onerror="this.remove()">
+              <span class="water">+</span>
+            </div>
+            <div class="cap">pAJM.677–KorA</div>
+          </div>
+          <div class="sq">
+            <div class="ph ph--sq">
+              <img src="assets/img/challenge/pajm677-03-korb.png" alt="pAJM.677–KorB" onload="this.nextElementSibling.style.display='none'" onerror="this.remove()">
+              <span class="water">+</span>
+            </div>
+            <div class="cap">pAJM.677–KorB</div>
+          </div>
+          <div class="sq">
+            <div class="ph ph--sq">
+              <img src="assets/img/challenge/pajm677-04-trba.png" alt="pAJM.677–TrbA" onload="this.nextElementSibling.style.display='none'" onerror="this.remove()">
+              <span class="water">+</span>
+            </div>
+            <div class="cap">pAJM.677–TrbA</div>
+          </div>
+          <div class="sq">
+            <div class="ph ph--sq">
+              <img src="assets/img/challenge/pajm677-05-cmr.png" alt="pAJM.677 CmR derivative" onload="this.nextElementSibling.style.display='none'" onerror="this.remove()">
+              <span class="water">+</span>
+            </div>
+            <div class="cap">pAJM.677 CmR derivative</div>
+          </div>
+          <div class="sq">
+            <div class="ph ph--sq">
+              <img src="assets/img/challenge/prk24-wildtype.png" alt="pRK24 construct" onload="this.nextElementSibling.style.display='none'" onerror="this.remove()">
+              <span class="water">+</span>
+            </div>
+            <div class="cap">pRK24 construct</div>
+          </div>
+        </div>
+  </div>
+
+  <div class="band band--sand">
+    <h3 class="sub">Donor / Recipient Strain Design (Four Donors + One Recipient)</h3>
+    <table class="tb">
+      <tr><th>Strain</th><th>Plasmids Carried</th><th>Maintenance Antibiotics</th><th>Primary Purpose</th></tr>
+      <tr><td><b>Donor 1</b></td><td>Wild‑type pRK24 + wild‑type pAJM.677‑YFP</td><td>Tet 10 μg/mL + Kan 50 μg/mL</td><td>Wild‑type pRK24 conjugation control + YFP induction control</td></tr>
+      <tr><td><b>Donor 2</b></td><td>Wild‑type pRK24 variant + kanamycin‑resistant pAJM.677‑KorA</td><td>Tet 10 μg/mL + Kan 50 μg/mL</td><td>pRK24 engineering‑effect control / regulator quantitative analysis</td></tr>
+      <tr><td><b>Donor 3</b></td><td>Wild‑type pRK24 variant + kanamycin‑resistant pAJM.677‑KorB</td><td>Tet 10 μg/mL + Kan 50 μg/mL</td><td>Primary engineered challenge system / no‑fluorescence control</td></tr>
+      <tr><td><b>Donor 4</b></td><td>Wild‑type pRK24 variant + kanamycin‑resistant pAJM.677‑TrbA/td</td><td>Tet 10 μg/mL + Kan 50 μg/mL</td><td>Primary engineered challenge system / no‑fluorescence control</td></tr>
+      <tr><td><b>Recipient</b></td><td>Chloramphenicol‑resistant pAJM.677 derivative</td><td>Chl 25 μg/mL</td><td>Recipient cell; Chl‑based selection of transconjugants after conjugation</td></tr>
+    </table>
+ 
+  </div>
+</section>
+
+<!-- ================= 04 实验方案 ================= -->
+<section class="block" id="protocol">
+  <span class="eyebrow">04 · Methods &amp; Protocols</span>
+  <h2 class="sec">Standardized Experimental Protocols (Following iDEC 2026 Official Guidelines)</h2>
+
+  <!-- SVG 3:流程时间线 -->
+  <svg class="diag" viewBox="0 0 880 320" role="img" aria-label="Experimental workflow timeline">
+    <defs>
+      <marker id="arrB" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+        <path d="M0,0 L6,3 L0,6 Z" fill="#12262f"/>
+      </marker>
+    </defs>
+    <text x="440" y="20" text-anchor="middle" font-size="13" font-weight="700" fill="#0d5f6b">Challenge Experimental Workflow (Schematic)</text>
+
+    <line x1="20" y1="86" x2="860" y2="86" stroke="#12262f" stroke-width="2" marker-end="url(#arrB)"/>
+    <g font-size="10.5">
+      <circle cx="50" cy="86" r="16" fill="#0d5f6b"/><text x="50" y="91" text-anchor="middle" font-size="11" font-weight="700" fill="#fff">D1</text>
+      <circle cx="250" cy="86" r="16" fill="#13a189"/><text x="250" y="91" text-anchor="middle" font-size="11" font-weight="700" fill="#fff">D2</text>
+      <circle cx="450" cy="86" r="16" fill="#13a189"/><text x="450" y="91" text-anchor="middle" font-size="11" font-weight="700" fill="#fff">D2</text>
+      <circle cx="640" cy="86" r="16" fill="#13a189"/><text x="640" y="91" text-anchor="middle" font-size="11" font-weight="700" fill="#fff">D2</text>
+      <circle cx="800" cy="86" r="16" fill="#c47a2a"/><text x="800" y="91" text-anchor="middle" font-size="11" font-weight="700" fill="#fff">D3</text>
+    </g>
+    <g font-size="10.5" text-anchor="middle" font-weight="700">
+      <text x="50" y="52">Overnight Culture</text>
+      <text x="50" y="67">16–20 h · 37 ℃</text>
+      <text x="50" y="118" font-size="10" font-weight="400" fill="#435f6a">Donor: 200 μL LB</text>
+      <text x="60" y="131" font-size="10" font-weight="400" fill="#435f6a">+ Tet 10 / Kan 50 μg/mL</text>
+      <text x="50" y="144" font-size="10" font-weight="400" fill="#435f6a">Recipient: 200 μL LB</text>
+      <text x="50" y="157" font-size="10" font-weight="400" fill="#435f6a">+ Chl 25 μg/mL</text>
+      <text x="70" y="170" font-size="10" font-weight="400" fill="#435f6a">96-well · 800–1000 rpm</text>
+
+      <text x="250" y="52">6-hour Induction</text>
+      <text x="250" y="67">1:100 dilution → 1 mL</text>
+      <text x="250" y="118" font-size="10" font-weight="400" fill="#435f6a">Six L-arabinose levels:</text>
+      <text x="250" y="131" font-size="10" font-weight="400" fill="#435f6a">0 / 0.1 / 1 / 10 /</text>
+      <text x="250" y="144" font-size="10" font-weight="400" fill="#435f6a">100 / 1000 μM</text>
+      <text x="250" y="157" font-size="10" font-weight="400" fill="#435f6a">Recipient in parallel</text>
+      <text x="250" y="170" font-size="10" font-weight="400" fill="#435f6a">(no arabinose)</text>
+
+      <text x="450" y="52">Plate Reading + PBS</text>
+      <text x="450" y="67">OD600 + YFP (3 blanks)</text>
+      <text x="450" y="118" font-size="10" font-weight="400" fill="#435f6a">200 μL into black</text>
+      <text x="450" y="131" font-size="10" font-weight="400" fill="#435f6a">clear-bottom plate</text>
+      <text x="450" y="144" font-size="10" font-weight="400" fill="#435f6a">1 mL sterile PBS</text>
+      <text x="450" y="157" font-size="10" font-weight="400" fill="#435f6a">Report ex/em λ</text>
+      <text x="450" y="170" font-size="10" font-weight="400" fill="#435f6a">and gain</text>
+
+      <text x="640" y="52">Filter Mating</text>
+      <text x="640" y="67">OD norm. 0.5 mL @ OD600=1</text>
+      <text x="640" y="118" font-size="10" font-weight="400" fill="#435f6a">1:1 donor + recipient</text>
+      <text x="640" y="131" font-size="10" font-weight="400" fill="#435f6a">→ centrifuge</text>
+      <text x="640" y="144" font-size="10" font-weight="400" fill="#435f6a">10–15 μL onto filter</text>
+      <text x="640" y="157" font-size="10" font-weight="400" fill="#435f6a">37 ℃ for 1 h</text>
+      <text x="640" y="170" font-size="10" font-weight="400" fill="#435f6a">resuspend in 1 mL PBS</text>
+
+      <text x="800" y="52">Colony Counting</text>
+      <text x="800" y="67">5-fold dilution spotting</text>
+      <text x="800" y="118" font-size="10" font-weight="400" fill="#435f6a">Tet+Kan (donors)</text>
+      <text x="800" y="131" font-size="10" font-weight="400" fill="#435f6a">Tet+Chl</text>
+      <text x="800" y="144" font-size="10" font-weight="400" fill="#435f6a">(transconjugants)</text>
+      <text x="800" y="157" font-size="10" font-weight="400" fill="#435f6a">CE = CFU(Tet+Chl) /</text>
+      <text x="800" y="170" font-size="10" font-weight="400" fill="#435f6a">CFU(Tet+Kan)</text>
+    </g>
+
+    <!-- 并行:质粒维持 -->
+    <line x1="60" y1="230" x2="820" y2="230" stroke="#8a6d1d" stroke-width="1.6" stroke-dasharray="6 4" marker-end="url(#arrB)"/>
+    <text x="440" y="206" text-anchor="middle" font-size="11.5" font-weight="700" fill="#8a6d1d">Parallel Track: pRK24 Plasmid Maintenance Assay (48 h Serial Passaging)</text>
+    <g font-size="10.5" text-anchor="middle">
+      <rect x="60" y="240" width="150" height="34" rx="8" fill="#fbf1d8" stroke="#c9a227" stroke-width="1.2"/>
+      <text x="135" y="253" font-weight="700" fill="#7a5f12">Two Condition Sets</text>
+      <text x="135" y="266" fill="#7a5f12">LB+Tet / Tet-free LB</text>
+      <rect x="240" y="240" width="170" height="34" rx="8" fill="#fbf1d8" stroke="#c9a227" stroke-width="1.2"/>
+      <text x="325" y="253" font-weight="700" fill="#7a5f12">12-h passaging ×4</text>
+      <text x="325" y="266" fill="#7a5f12">Sampling 0/12/24/36/48 h</text>
+       <rect x="440" y="240" width="180" height="34" rx="8" fill="#fbf1d8" stroke="#c9a227" stroke-width="1.2"/>
+      <text x="530" y="253" font-weight="700" fill="#7a5f12">Serial dilution, 48 h</text>
+      <text x="530" y="266" fill="#7a5f12">Spot on LB+Tet plates</text>
+      <rect x="650" y="240" width="170" height="34" rx="8" fill="#fbf1d8" stroke="#c9a227" stroke-width="1.2"/>
+      <text x="735" y="253" font-weight="700" fill="#7a5f12">Compare 2 goups TetR CFU</text>
+      <text x="735" y="266" fill="#7a5f12">WT × ±Tet</text>
+    </g>
+  </svg>
+
+  <div class="band">
+    <h3 class="sub">Day 1: Overnight Culture Preparation</h3>
+    <table class="tb">
+      <tr><th>Item</th><th>Donor Strain</th><th>Recipient Strain</th></tr>
+      <tr><td>Inoculation</td><td>Pick single colony, 200 μL LB + Tet 10 μg/mL + Kan 50 μg/mL (96-well plate)</td><td>Pick single colony, 200 μL LB + Chl 25 μg/mL (96-well plate)</td></tr>
+      <tr><td>Strain Profile</td><td>① Wild-type pRK24 + wild-type pAJM.677-YFP; ② Wild-type pRK24 + pAJM.677-KorA; ③ Wild-type pRK24 + pAJM.677-KorB; ④ Wild-type pRK24 + pAJM.677-TrbA</td><td>pAJM.677 derivative with chloramphenicol resistance</td></tr>
+      <tr><td>Culture Condition</td><td colspan="2">37 ℃ · 800–1000 rpm shaking · 16–20 h</td></tr>
+    </table>
+  </div>
+
+  <div class="band">
+    <h3 class="sub">Day 2: 6-hour Induction & Sample Preparation</h3>
+    <table class="tb">
+      <tr><th>Step</th><th>Operation</th><th>Key Parameters / Reporting Items</th></tr>
+      <tr><td>Donor Induction</td><td>Deep-well 96-well plate: 990 μL fresh LB + Tet 10 μg/mL + Kan 50 μg/mL + L-arabinose, inoculate with 10 μL overnight culture</td><td>Final volume 1 mL · 1:100 dilution · L-arabinose 0 / 0.1 / 1 / 10 / 100 / 1000 μM · 37 ℃ for 6 h</td></tr>
+      <tr><td>Recipient Preparation</td><td>990 μL fresh LB + Chl 25 μg/mL, inoculate with 10 μL overnight culture</td><td>Incubate for 6 h synchronously with donors; no arabinose; no fluorescence measurement</td></tr>
+      <tr><td>PBS Resuspension</td><td>Centrifuge and discard supernatant, gently resuspend pellet in 1 mL sterile PBS</td><td>Resuspend donors and recipients separately; retain leftover suspension for conjugation</td></tr>
+      <tr><td>Plate Reading</td><td>200 μL resuspension transferred to black clear-bottom 96-well plate (3 PBS blank wells)</td><td>OD₆₀₀ + YFP fluorescence; report raw OD₆₀₀ / raw fluorescence / background-subtracted fluorescence / OD₆₀₀-normalized fluorescence / arabinose concentration / biological replicate ID / plate model / excitation & emission wavelength / gain</td></tr>
+      <tr><td>Filter Conjugation</td><td>Performed following the standardized “Conjugation on filters” protocol on protocols.io</td><td>Non-selective LB agar plates opened to air-dry for 2 h (humidity-dependent); 0.2 μm sterile cellulose acetate membrane placed on agar surface; report membrane material / pore size / diameter / vendor / catalog number / underlying agar</td></tr>
+      <tr><td>Donor‑Recipient Mixing</td><td>OD₆₀₀ measured with 1 cm pathlength standard spectrophotometer; 0.5 mL of OD₆₀₀ = 1 culture from each side (Volume = 0.5/OD₆₀₀ mL), mixed at 1:1 ratio → centrifuge → resuspend in 10–15 μL PBS</td><td>Example: OD₆₀₀=1.0 → take 0.5 mL; OD₆₀₀=2.0 → take 0.25 mL; OD₆₀₀=0.5 → take 1.0 mL. Plate reader readings must be calibrated to 1 cm pathlength before use</td></tr>
+      <tr><td>Membrane Spotting & Incubation</td><td>Spot all 10–15 μL suspension onto the center of filter, allow slight drying then close the plate lid</td><td>Incubate at 37 ℃ for 1 h; report incubation temperature and exact conjugation duration</td></tr>
+      <tr><td>Post-conjugation Recovery</td><td>Transfer filter into sterile tube → add 1 mL sterile PBS → vigorously vortex to elute bacteria</td><td>Recovered suspension for serial dilution and plating</td></tr>
+      <tr><td>Dilution & Spot Plating</td><td>Prepare 5-fold serial dilution series for each recovered mixture, spot on two types of selective agar plates</td><td>Donor enumeration: LB + Tet 10 μg/mL + Kan 50 μg/mL; Transconjugant enumeration: LB + Tet 10 μg/mL + Chl 25 μg/mL (Chl selects for pAJM.677, Tet selects for pRK24)</td></tr>
+    </table>
+  </div>
+
+<div class="band">
+    <h3 class="sub">Day 3: Colony Counting and Conjugation Efficiency Calculation</h3>
+    <p>After overnight incubation of selective plates, countable spots at appropriate dilutions are selected for colony counting. Record the following for each L-arabinose concentration and each biological replicate:</p>
+    <ul style="margin:10px 0 12px 20px;">
+      <li>Raw colony counts on Tet+Kan plates, raw colony counts on Tet+Chl plates, and dilution factor;</li>
+      <li>Calculated Tet+Kan CFU and Tet+Chl CFU.</li>
+    </ul>
+    <div class="formula">Conjugation Efficiency CE = <var>CFU(Tet+Chl)</var> ⁄ <var>CFU(Tet+Kan)</var></div>
+    <p class="muted">One independent conjugation‑efficiency value is calculated for every combination of L‑arabinose concentration and biological replicate.</p>
+  </div>
+</section>
+
+<!-- ================= 05 必需对照 ================= -->
+<section class="block" id="controls">
+  <span class="eyebrow">05 · Required Controls</span>
+  <h2 class="sec">7 Required Control Experiments</h2>
+  <p class="lede">All controls serve to verify that observed changes in measured conjugation efficiency are not primarily caused by toxicity, growth defects, contamination, altered antibiotic resistance, plasmid loss, or selection artifacts.</p>
+  <div class="band">
+    <table class="tb">
+      <tr><th>#</th><th>Control</th><th>Purpose</th></tr>
+      <tr><td>1</td><td>Wild‑type pRK24 + wild‑type pAJM.677 fluorescence induction control</td><td>Confirm pBAD expression output varies across the L‑arabinose gradient</td></tr>
+      <tr><td>2</td><td>Wild‑type pRK24 conjugation control</td><td>Establish baseline wild‑type conjugation efficiency (denominator for scoring)</td></tr>
+      <tr><td>3</td><td>Donor‑only control (0.5 mL, OD₆₀₀=1) plated on Tet+Chl</td><td>Rule out growth of donors alone on double‑antibiotic plates</td></tr>
+      <tr><td>4</td><td>Recipient‑only control (0.5 mL, OD₆₀₀=1) plated on Tet+Chl</td><td>Rule out recipient background growth on double‑antibiotic plates</td></tr>
+      <tr><td>5</td><td>Selection validation: donors grow on Tet+Kan plates</td><td>Validate donor selection efficiency</td></tr>
+      <tr><td>6</td><td>Selection validation: recipients grow on Chl plates</td><td>Validate recipient selection efficiency</td></tr>
+      <tr><td>7</td><td>Selection validation: pure recipients cannot grow on Tet+Chl plates</td><td>Confirm selectivity for transconjugant counting</td></tr>
+    </table>
+  </div>
+</section>
+
+<!-- ================= 06 必需图表 ================= -->
+<section class="block" id="figures">
+  <span class="eyebrow">06 · Required Figures</span>
+  <h2 class="sec">3 Required Figures (Error bars = standard deviation, ≥ 3 biological replicates)</h2>
+  <p class="lede">Below is the standard framework placeholder for figures (example structure, not real data). Replace with measured experimental data upon assay completion.</p>
+
+  <div class="figgrid">
+    <div class="fig">
+      <h5>Figure 1 · pBAD Induction and Conjugation Efficiency Response</h5>
+      <p class="req">Line plot: Relationship between YFP fluorescence of wild‑type pAJM.677 and conjugation efficiency of the engineered system across the same L‑arabinose gradient (0 / 0.1 / 1 / 10 / 100 / 1000 μM). X‑axis: L‑arabinose concentration; Y‑axis: normalized YFP fluorescence + normalized conjugation efficiency (dual Y‑axes, or each normalized to its own maximum).</p>
+    </div>
+
+    <div class="fig">
+      <h5>Figure 2 · Fully Induced Conjugation Efficiency Comparison</h5>
+      <p class="req">Bar chart: Conjugation efficiency of wild‑type pRK24 control vs engineered system under 1000 μM L‑arabinose; Y‑axis: CE = CFU(Tet+Chl) / CFU(Tet+Kan). Used to verify whether wild‑type conjugation capacity is retained under full induction.</p>
+      
+    </div>
+
+    <div class="fig">
+      <h5>Figure 3 · pRK24 Plasmid Maintenance Comparison</h5>
+      <p class="req">Bar chart: Tetᵣ CFU of four groups (or normalized plasmid retention rate) after 48 h serial passaging. Parallel plating on antibiotic‑free LB plates is recommended to calculate standardized retention rate.</p>
+      
+    </div>
+  </div>
+</section>
+
+<!-- ================= 07 评分指标 ================= -->
+<section class="block" id="scoring">
+  <span class="eyebrow">07 · Scoring Metrics</span>
+  <h2 class="sec">Standardized Scoring Metrics and Summary Table</h2>
+
+  <div class="grid">
+    <div class="card">
+      <h4>① ON-state Retention Ratio R<sub>ON</sub></h4>
+      <div class="formula">R<sub>ON</sub> = <var>CE<sub>engineered, 1000μM</sub></var> ⁄ <var>CE<sub>original pRK24</sub></var></div>
+      <p class="muted">Measures the ability of the engineered system to retain wild-type conjugation efficiency under full induction; capped at 1.0 for scoring (values >1 are counted as 1.0).</p>
+    </div>
+    <div class="card">
+      <h4>② OFF-state Leakage L<sub>OFF</sub></h4>
+      <div class="formula">L<sub>OFF</sub> = <var>CE<sub>engineered, 0μM</sub></var> ⁄ <var>CE<sub>original pRK24</sub></var></div>
+      <p class="muted">Residual conjugation efficiency under non-inducing conditions. If L<sub>OFF</sub> > 1, (1 − L<sub>OFF</sub>) is treated as 0 for scoring.</p>
+    </div>
+    <div class="card">
+      <h4>③ Induction Fold Change F</h4>
+      <div class="formula">F = (<var>CE<sub>eng, 1000μM</sub></var> − <var>CE<sub>eng, 0μM</sub></var>) ⁄ <var>CE<sub>eng, 0μM</sub></var></div>
+      <p class="muted">Report “below limit of detection” when no transconjugant colonies are observed at 0 μM; use the measured limit of detection as the denominator. Scoring cap: F<sub>scoring</sub> = min(F, 10000). Raw measured values should still be fully reported.</p>
+    </div>
+    <div class="card">
+      <h4>④ Robustness Coefficient Q<sub>robust</sub></h4>
+      <div class="formula">Q<sub>robust</sub> = 1 ⁄ (1 + <var>CV<sub>avg</sub></var>)</div>
+      <p class="muted">CV<sub>avg</sub> is the average coefficient of variation of conjugation efficiency across biological replicates for all required L-arabinose gradients; smaller CV yields Q closer to 1.</p>
+    </div>
+  </div>
+
+  <div class="band band--sand">
+    <h3 class="sub">⑤ Composite Performance Score S</h3>
+    <div class="formula" style="font-size:16px;">S = R<sub>ON</sub>² × log₁₀(F<sub>scoring</sub> + 1) × (1 − L<sub>OFF</sub>)² × Q<sub>robust</sub></div>
+    <p class="muted">All conjugation efficiencies shall be reported as mean ± standard deviation (≥3 independent biological replicates).</p>
+
+    <h3 class="sub" style="margin-top:20px">Required Scoring Summary Table (Template)</h3>
+    <table class="tb">
+      <tr><th>Metric</th><th>Symbol / Definition</th><th>Value (mean ± SD, n ≥ 3)</th><th>Notes</th></tr>
+      <tr><td>Wild‑type pRK24 Conjugation Efficiency</td><td>CE<sub>original pRK24</sub></td><td class="tbd">TBD</td><td>Baseline denominator for scoring</td></tr>
+      <tr><td>Conjugation Efficiency at 0 μM</td><td>CE<sub>engineered, 0μM</sub></td><td class="tbd">TBD</td><td>Note if below limit of detection</td></tr>
+      <tr><td>Conjugation Efficiency at 1000 μM</td><td>CE<sub>engineered, 1000μM</sub></td><td class="tbd">TBD</td><td>Fully induced state</td></tr>
+      <tr><td>ON-state Retention Ratio</td><td>R<sub>ON</sub> (capped at 1.0)</td><td class="tbd">TBD</td><td>CE<sub>eng,1000</sub>/CE<sub>orig</sub></td></tr>
+      <tr><td>OFF-state Leakage</td><td>L<sub>OFF</sub></td><td class="tbd">TBD</td><td>CE<sub>eng,0</sub>/CE<sub>orig</sub></td></tr>
+      <tr><td>Induction Fold Change</td><td>F (capped at 10000)</td><td class="tbd">TBD</td><td>Use limit of detection as denominator if below detection</td></tr>
+      <tr><td>Average Coefficient of Variation</td><td>CV<sub>avg</sub></td><td class="tbd">TBD</td><td>Across all gradients</td></tr>
+      <tr><td>Robustness Coefficient</td><td>Q<sub>robust</sub></td><td class="tbd">TBD</td><td>1/(1+CV<sub>avg</sub>)</td></tr>
+      <tr><td>Composite Performance Score</td><td>S</td><td class="tbd">TBD</td><td>R<sub>ON</sub>²·log₁₀(F+1)·(1−L<sub>OFF</sub>)²·Q</td></tr>
+    </table>
+  </div>
+</section>
+
+
+  <div class="band band--mist" style="margin-top:18px">
+    <h3 class="sub">Attribution Record</h3>
+    <table class="tb">
+      <tr><th>Item</th><th>Member / Lead</th></tr>
+      <tr><td>Construct design</td><td class="tbd">Zhuochen Wang</td></tr>
+      <tr><td>Experimental execution</td><td class="tbd">Zhuochen Wang, Hengxuan Zhu</td></tr>
+      <tr><td>Dataset generation</td><td class="tbd">Zhuochen Wang, Hengxuan Zhu, Xingzhao Zhu</td></tr>
+      <tr><td>Data analysis</td><td class="tbd">Zhuochen Wang, Hengxuan Zhu</td></tr>
+      <tr><td>Interpretation / Reporting</td><td class="tbd">Zhuochen Wang, Hengxuan Zhu, Xingzhao Zhu</td></tr>
+    </table>
+  </div>
+
+<!-- ================= 09 参考 ================= -->
+<section class="block" id="refs">
+  <span class="eyebrow">09 · References</span>
+  <h2 class="sec">References</h2>
+  <div class="band">
+    <ol style="padding-left:20px; font-size:13.5px; line-height:1.9;">
+      <li>iDEC 2026 Challenge Experimental Guidelines: <i>Engineering Control of pRK24 Conjugation Efficiency</i>.</li>
+      <li>Ma NJ, Moonan DW, Isaacs FJ. <i>Precise manipulation of bacterial chromosomes by conjugative assembly genome engineering.</i> Nat Protoc. 2014;9(10):2285-2300. doi:10.1038/nprot.2014.081.</li>
+      <li>Bingle LEH, Rajasekar KV, Muntaha S, Nadella V, Hyde EI, Thomas CM. <i>A single aromatic residue in transcriptional repressor protein KorA is critical for cooperativity with its co-regulator KorB.</i> Mol Microbiol. 2008;70(6):1502-1514. doi:10.1111/j.1365-2958.2008.06498.x.</li>
+      <li>Zatyka M, Bingle L, Jones AC, Thomas CM. <i>Cooperativity between KorB and TrbA repressors of broad-host-range plasmid RK2.</i> J Bacteriol. 2001;183(3):1022-1031. doi:10.1128/JB.183.3.1022-1031.2001.</li>
+      <li>Jagura-Burdzy G, Khanim F, Smith CA, Thomas CM. <i>Crosstalk between plasmid vegetative replication and conjugative transfer: repression of the TrbA operon by trbA of broad host range plasmid RK2.</i> Nucleic Acids Res. 1992;20(15):3939-3944. doi:10.1093/nar/20.15.3939.</li>
+      <li>Bingle LEH, Zatyka M, Manzoor SE, Thomas CM. <i>Co-operative interactions control conjugative transfer of broad host-range plasmid RK2: full effect of minor changes in TrbA operator depends on KorB.</i> Mol Microbiol. 2003;49(4):1095-1108. doi:10.1046/j.1365-2958.2003.03620.x.</li>
+      
+    </ol>
+  </div>
+</section>
+
+<section class="block" id="refs">
+  <span class="eyebrow">10 · Acknowledgements</span>
+  <h2 class="sec">Acknowledgements</h2>
+  <div class="band">
+     <ul>
+      <li>Supervisor <b>Prof. Yin Han</b>: provided key guidance and feedback on the research questions and methodology for this challenge project.</li>
+      <li>Lab head <b>Prof. Zizhong Qi</b>: provided the experimental platform and research resources for this challenge project.</li>
+      <li>Dr. Xiyan Wang: kindly donated the pRK24 plasmid, which was essential for our bacterial conjugation experiments.</li>
+      <li>All iDEC challenge team members: for overcoming every experimental milestone together.</li>
+      <li><b>College of Marine Life Sciences, Ocean University of China</b>: provided experimental facilities and reagents, and supported us throughout this research.</li>
+    </ul>
+  </div>
+</section>
+
+
+</main>
+
+<!-- ================= FOOTER ================= -->
+<footer class="site-footer">
+  <div class="wrap">
+    <div class="foot-grid">
+      <div>
+        <h4>OUC‑DE · iDEC 2026</h4>
+        <p style="font-size:12.5px; color:#9fc3c9; max-width:280px;">
+          Install an inducible conjugation switch for pRK24 — engineering tunable conjugation efficiency leveraging the KorA / KorB / TrbA regulatory network.
+        </p>
+      </div>
+      <div>
+        <h4>Quick Navigation</h4>
+        <div class="foot-list">
+          <a href="#overview">01 Challenge Overview</a>
+          <a href="#bg">02 Scientific Background</a>
+          <a href="#design">03 Project Design</a>
+          <a href="#protocol">04 Experimental Protocols</a>
+          <a href="#scoring">07 Scoring Metrics</a>
+        </div>
+      </div>
+      <div>
+        <h4>Contact</h4>
+        <div class="foot-list">
+          <span>Email: hanyin@ouc.edu.cn</span>
+          <span>Lab: Laboratory of Applied Microbiological Technology</span>
+          <span>Affiliation: Ocean University of China · College of Marine Life Sciences</span>
+          <span>City: Qingdao, China</span>
+        </div>
+      </div>
+      <div>
+        <h4>Status</h4>
+        <div class="foot-list">
+          <span>Challenge Report: 2026‑10‑01</span>
+          <span>On‑site Evaluation: Nov 2026 · iDEC Festival</span>
+          <span>Wiki: Content under continuous update</span>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 OUC‑DE Team · Content licensed under CC BY‑SA 4.0</span>
+      <span>This page is compiled following iDEC 2026 official challenge guidelines and cited references; experimental data pending completion.</span>
+    </div>
+  </div>
+</footer>
+
+
+<!-- ================= 站点导航:折叠抽屉（与 wiki 其它页面一致） ================= -->
+<style>
+  .wknav-burger{
+    position:relative; width:56px; height:50px; padding:0; cursor:pointer;
+    display:grid; place-items:center;
+    border:1.5px solid rgba(247,241,226,.35); border-radius:14px 14px 14px 4px;
+    background:rgba(4,34,46,.35); transition:background .25s, transform .25s;
+  }
+  .wknav-burger:hover{background:rgba(19,161,137,.35); transform:translateY(-2px);}
+  .wknav-lines{display:grid; gap:6px; width:26px;}
+  .wknav-lines i{display:block; height:2.5px; border-radius:3px; background:#f7f1e2;
+    transition:transform .35s cubic-bezier(.6,.1,.2,1), opacity .25s, width .35s;}
+  .wknav-lines i:nth-child(1){width:26px;}
+  .wknav-lines i:nth-child(2){width:20px;}
+  .wknav-lines i:nth-child(3){width:26px;}
+  .wknav-burger[aria-expanded="true"] .wknav-lines i:nth-child(1){transform:translateY(8.5px) rotate(45deg); width:26px;}
+  .wknav-burger[aria-expanded="true"] .wknav-lines i:nth-child(2){opacity:0;}
+  .wknav-burger[aria-expanded="true"] .wknav-lines i:nth-child(3){transform:translateY(-8.5px) rotate(-45deg); width:26px;}
+
+  .wknav-scrim{position:fixed; inset:0; z-index:9990; background:rgba(4,22,30,.55);
+    -webkit-backdrop-filter:blur(3px); backdrop-filter:blur(3px); opacity:0; pointer-events:none; transition:opacity .35s;}
+  .wknav-panel{position:fixed; top:0; right:0; z-index:9991; height:100%; width:min(88vw,400px);
+    padding:26px 28px 40px; background:#06303f; color:#f7f1e2; overflow-y:auto;
+    transform:translateX(102%); transition:transform .5s cubic-bezier(.5,.05,.2,1);
+    box-shadow:-20px 0 60px rgba(0,0,0,.45);}
+  .wknav-panel::before{content:""; position:absolute; inset:0 auto 0 -26px; width:28px; background:#06303f;
+    clip-path:polygon(100% 0,100% 100%,40% 96%,70% 90%,30% 84%,62% 78%,26% 72%,66% 66%,32% 60%,72% 54%,
+      28% 48%,64% 42%,30% 36%,68% 30%,34% 24%,70% 18%,36% 12%,100% 6%,100% 0);}
+  body.wknav-open .wknav-scrim{opacity:1; pointer-events:auto;}
+  body.wknav-open .wknav-panel{transform:none;}
+  .wknav-close{position:absolute; top:18px; right:20px; width:34px; height:34px; cursor:pointer;
+    border:1px solid rgba(247,241,226,.3); border-radius:50%; background:rgba(247,241,226,.08);
+    color:#f7f1e2; font-size:19px; line-height:1;}
+  .wknav-close:hover{background:rgba(19,161,137,.45);}
+  .wknav-title{font-size:11px; letter-spacing:.3em; text-transform:uppercase; color:rgba(189,238,226,.7);}
+  .wknav-home{display:inline-flex; align-items:center; gap:6px; margin:14px 0 4px; padding:9px 16px;
+    border-radius:999px; background:#13a189; color:#04222e; font-weight:700; font-size:13px; text-decoration:none;}
+  .wknav-home:hover{background:#8ed07a;}
+  .wknav-list{display:grid; gap:4px; margin-top:14px;}
+  .wknav-list a{display:grid; grid-template-columns:36px 1fr; gap:10px; align-items:center;
+    padding:14px 4px; border-bottom:1px solid rgba(247,241,226,.14); text-decoration:none; color:#f7f1e2;
+    transition:transform .25s, color .25s;}
+  .wknav-list a:hover{transform:translateX(-6px); color:#8ed07a;}
+  .wknav-list i{font-style:normal; font-size:12px; color:rgba(189,238,226,.6);}
+  .wknav-list b{display:block; font-size:20px; line-height:1.25;}
+  .wknav-list small{display:block; font-size:11.5px; color:rgba(247,241,226,.6);}
+  .wknav-list a[aria-current="page"]{color:#f7d472;}
+  .wknav-list a[aria-current="page"] i{color:#f7d472;}
+  .wknav-foot{margin-top:22px; font-size:12px; line-height:1.7; color:rgba(247,241,226,.6);}
+</style>
+
+<div class="wknav-scrim" id="wknav-scrim" aria-hidden="true"></div>
+<aside class="wknav-panel" id="wknav" role="dialog" aria-modal="true" aria-label="Site navigation">
+  <button class="wknav-close" type="button" aria-label="Close navigation menu">×</button>
+  <p class="wknav-title">Index</p>
+  <a class="wknav-home" href="index.html">← Back to Home</a>
+  <nav class="wknav-list">
+    <a href="index.html"><i>01</i><span><b>Home</b><small>Home · project overview and updates</small></span></a>
+    <a href="team.html"><i>02</i><span><b>Team</b><small>Photo wall · click a portrait to flip it</small></span></a>
+    <a href="project.html"><i>03</i><span><b>Project</b><small>Description / Design / Results …</small></span></a>
+    <a href="documentation.html"><i>04</i><span><b>Documentation</b><small>Lab Notebook / Download</small></span></a>
+    <a href="挑战赛.html" aria-current="page"><i>05</i><span><b>Challenge</b><small>Challenge · pRK24 conjugation control (current page)</small></span></a>
+  </nav>
+  <p class="wknav-foot">IDEC · College of Marine Life Sciences, Ocean University of China<br>iDEC 2026 Challenge · OUC-DE</p>
+</aside>
+
+<script>
+(function () {
+  var burger = document.querySelector('.wknav-burger');
+  var panel = document.getElementById('wknav');
+  var scrim = document.getElementById('wknav-scrim');
+  if (!burger || !panel) return;
+  function open() {
+    document.body.classList.add('wknav-open');
+    burger.setAttribute('aria-expanded', 'true');
+  }
+  function close() {
+    document.body.classList.remove('wknav-open');
+    burger.setAttribute('aria-expanded', 'false');
+  }
+  burger.addEventListener('click', function () {
+    document.body.classList.contains('wknav-open') ? close() : open();
+  });
+  scrim.addEventListener('click', close);
+  var closeBtn = panel.querySelector('.wknav-close');
+  if (closeBtn) closeBtn.addEventListener('click', close);
+  panel.querySelectorAll('a').forEach(function (a) { a.addEventListener('click', close); });
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape') close(); });
+})();
+</script>
+
+</body>
+</html>
